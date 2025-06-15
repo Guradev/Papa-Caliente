@@ -36,5 +36,5 @@ public class GamePlayer implements Listener {
         }
     }
     // End of Events for handling prevention
-    
+
 }

@@ -1,15 +1,20 @@
 package net.gura.papaCaliente.commands;
 
+import net.gura.papaCaliente.PapaCaliente;
+import net.gura.papaCaliente.game.GameManager;
 import net.gura.papaCaliente.gui.AdminGUI;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 public class PapaCalienteCommand implements CommandExecutor {
 
+    GameManager gm = PapaCaliente.getPlugin().getGameManager();
+
     @Override
-    public boolean onCommand(CommandSender commandSender, Command command, String s, String[] args) {
+    public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, String[] args) {
         if (!(commandSender instanceof Player player)) {
             commandSender.sendMessage("§cSolo jugadores pueden ejecutar este comando.");
             return true;
@@ -21,13 +26,14 @@ public class PapaCalienteCommand implements CommandExecutor {
         }
 
         if (args.length == 1 && args[0].equalsIgnoreCase("start")) {
-            //Force start Game Logic
+            gm.startGame();
+            return true;
         }
 
         if (args.length == 1 && args[0].equalsIgnoreCase("stop")) {
-            //Force stop Game Logic
+            gm.stopGame();
+            return true;
         }
-
         return true;
     }
 }

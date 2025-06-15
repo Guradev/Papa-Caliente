@@ -11,10 +11,10 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 public class AdminGUI {
-    public static final String TITLE = ChatColor.DARK_RED + "Admin GUI";
+    public static final String TITLE = ChatColor.DARK_RED + "Adminstrador de Evento";
 
     public static void openGUI(Player admin) {
-        Inventory inv = Bukkit.createInventory(null, 9, "Admin GUI");
+        Inventory inv = Bukkit.createInventory(null, 9, TITLE);
 
         inv.setItem(0, gameInfo());
         inv.setItem(1, clickItem(Material.LIME_WOOL, "§aEmpezar Evento", "Clic para forzar el inicio del evento"));
