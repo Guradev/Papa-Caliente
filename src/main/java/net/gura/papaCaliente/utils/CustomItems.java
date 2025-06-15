@@ -29,5 +29,13 @@ public class CustomItems {
         return item;
     }
 
+    public static boolean isPapaCaliente(ItemStack item) {
+        if (item == null || !item.hasItemMeta()) return false;
+        ItemMeta meta = item.getItemMeta();
+        NamespacedKey itemkey = new NamespacedKey(PapaCaliente.getPlugin(), "papa_caliente");
+        Byte tag = meta.getPersistentDataContainer().get(itemkey, PersistentDataType.BYTE);
+        return tag != null && tag == (byte) 1;
+    }
+
     //Add custom admin and mod items
 }

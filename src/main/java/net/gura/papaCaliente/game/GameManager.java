@@ -1,10 +1,14 @@
 package net.gura.papaCaliente.game;
 
 import net.gura.papaCaliente.utils.CustomItems;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.persistence.PersistentDataContainer;
 
 import java.util.*;
+
+import static net.gura.papaCaliente.utils.CustomItems.isPapaCaliente;
 
 public class GameManager {
     private GameState gameState = GameState.WAITING;
@@ -73,12 +77,17 @@ public class GameManager {
 
     private void givePotato(Player player) {
         ItemStack papa = CustomItems.PapaCaliente(player, 100);
-        player.getInventory().addItem(papa);
+        player.getInventory().setItem(1, papa);
+        // Testing required for checking if the updateInventory is required
     }
 
     private void removePotato(Player player) {
         // Logic for removing the potato from the player
-        ItemStack item = player.getInventory().getItem(player.getInventory().first(CustomItems.PapaCaliente(player, 100)));
+        ItemStack item = player.getInventory().getItem(1);
+        if (CustomItems.isPapaCaliente(item)) {
+            player.getInventory().setItem(4, null);
+            player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_BASS, 1F, 1F);
+            player.sendMessage("§aHas pasado la papa caliente.");
+        }
     }
-
 }
