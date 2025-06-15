@@ -10,6 +10,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 public final class PapaCaliente extends JavaPlugin {
 
     public static PapaCaliente plugin;
+    private AdventureAudiences adventure;
     private GameManager gameManager;
 
     String version = Bukkit.getVersion();
@@ -39,6 +40,10 @@ public final class PapaCaliente extends JavaPlugin {
 
         getServer().getConsoleSender().sendMessage("Evento Papa Caliente Deshabilitado " + "Versión " + version);
         getServer().getConsoleSender().sendMessage("Made by Gura1");
+    }
+
+    public AdventureAudiences adventure() {
+        return adventure;
     }
 
     public void registerCommands() {
