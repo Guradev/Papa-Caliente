@@ -1,1 +1,1 @@
-Papa Caliente event made for the HyCraft Minecraft Server
+Papa Caliente event
