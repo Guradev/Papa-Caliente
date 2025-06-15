@@ -1,4 +1,7 @@
 package net.gura.papaCaliente.listeners;
 
-public class ModGUIListener {
+import org.bukkit.event.Listener;
+
+public class ModGUIListener implements Listener {
+
 }

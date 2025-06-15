@@ -1,4 +1,7 @@
 package net.gura.papaCaliente.listeners;
 
-public class PlayerListener {
+import org.bukkit.event.Listener;
+
+public class PlayerListener implements Listener {
+
 }

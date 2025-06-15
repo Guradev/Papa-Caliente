@@ -11,7 +11,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 public final class PapaCaliente extends JavaPlugin {
 
     public static PapaCaliente plugin;
-    private AdventureAudiences adventure;
     private GameManager gameManager;
 
     String version = Bukkit.getVersion();
