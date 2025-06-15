@@ -1,6 +1,7 @@
 package net.gura.papaCaliente;
 
 import net.gura.papaCaliente.commands.AdminCommand;
+import net.gura.papaCaliente.commands.PapaCalienteCommand;
 import net.gura.papaCaliente.game.GameManager;
 import net.gura.papaCaliente.listeners.AdminGUIListener;
 import org.bukkit.Bukkit;
@@ -42,6 +43,6 @@ public final class PapaCaliente extends JavaPlugin {
 
     public void registerCommands() {
         //Crear un handler para que maneje el comando /papacaliente
-        getCommand("papacaliente").setExecutor(new AdminCommand());
+        getCommand("papacaliente").setExecutor(new PapaCalienteCommand());
     }
 }

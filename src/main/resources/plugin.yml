@@ -9,8 +9,8 @@ description: Plugin Evento Papa Caliente
 
 commands:
   papacaliente:
-    description: Inicia o para el evento de papa caliente
-    usage: /papacaliente <start|stop>
+    description: Comando principal del evento
+    usage: /papacaliente
 
 permissions:
   papacaliente.admin:
