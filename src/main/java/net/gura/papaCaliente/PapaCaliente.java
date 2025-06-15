@@ -19,13 +19,15 @@ public final class PapaCaliente extends JavaPlugin {
     public void onEnable() {
         plugin = this;
         gameManager = new GameManager();
-        getServer().getConsoleSender().sendMessage("Evento Papa Caliente Habilitado " + "Versión " + version);
-        getServer().getConsoleSender().sendMessage("Made by Gura1");
+
+        registerCommands();
 
         // Registramos los eventos del plugin
         getServer().getPluginManager().registerEvents(new AdminGUIListener(), this);
         getServer().getPluginManager().registerEvents(new GamePlayer(), this);
 
+        getServer().getConsoleSender().sendMessage("Evento Papa Caliente Habilitado " + "Versión " + version);
+        getServer().getConsoleSender().sendMessage("Made by Gura1");
     }
 
     public static PapaCaliente getPlugin() {
@@ -41,10 +43,6 @@ public final class PapaCaliente extends JavaPlugin {
 
         getServer().getConsoleSender().sendMessage("Evento Papa Caliente Deshabilitado " + "Versión " + version);
         getServer().getConsoleSender().sendMessage("Made by Gura1");
-    }
-
-    public AdventureAudiences adventure() {
-        return adventure;
     }
 
     public void registerCommands() {

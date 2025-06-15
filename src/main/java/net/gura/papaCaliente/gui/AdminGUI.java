@@ -36,12 +36,12 @@ public class AdminGUI {
 
         String state = gm.getGameState().name();
         String players = String.valueOf(gm.getPlayers().size());
-        String holder = gm.getCurrentHolder() != null ? gm.getCurrentHolder().getName() : "No hay holder";
+        String holder = gm.getCurrentHolder() != null ? gm.getCurrentHolder().getName() : "Ninguno";
 
         meta.setLore(java.util.List.of(
                 "Estado: " + state,
                 "Jugadores: " + players,
-                "Holder de Papa" + holder
+                "Holder de Papa: " + holder
         ));
 
         info.setItemMeta(meta);

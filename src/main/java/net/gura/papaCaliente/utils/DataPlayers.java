@@ -8,10 +8,11 @@ public class DataPlayers {
     private final ItemStack[] contents;
     private final ItemStack[] armor;
 
-    public SaveDataInventory(Player player) {
-        this.contents = player.getInventory().getContents();
-        this.armor = player.getInventory().getArmorContents();
-    }
+    //public SaveDataInventory(Player player) {
+    // this.contents = player.getInventory().getContents();
+    //    this.armor = player.getInventory().getArmorContents();
+    //}
+
 
     public DataPlayers(ItemStack[] contents, ItemStack[] armor) {
         this.contents = contents;

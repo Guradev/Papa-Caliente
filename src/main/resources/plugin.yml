@@ -4,7 +4,6 @@ main: net.gura.papaCaliente.PapaCaliente
 api-version: '1.21'
 load: STARTUP
 authors: [ Gura ]
-depend: [WorldEdit]
 description: Plugin Evento Papa Caliente
 
 commands:

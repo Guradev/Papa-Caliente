@@ -4,11 +4,8 @@ import net.gura.papaCaliente.utils.CustomItems;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.persistence.PersistentDataContainer;
 
 import java.util.*;
-
-import static net.gura.papaCaliente.utils.CustomItems.isPapaCaliente;
 
 public class GameManager {
     private GameState gameState = GameState.WAITING;
