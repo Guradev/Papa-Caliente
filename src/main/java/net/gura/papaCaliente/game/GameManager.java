@@ -1,6 +1,8 @@
 package net.gura.papaCaliente.game;
 
+import net.gura.papaCaliente.utils.CustomItems;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 import java.util.*;
 
@@ -70,11 +72,13 @@ public class GameManager {
     }
 
     private void givePotato(Player player) {
-        // Logic to give the potato to the player, possible show particles or play sound
+        ItemStack papa = CustomItems.PapaCaliente(player, 100);
+        player.getInventory().addItem(papa);
     }
 
     private void removePotato(Player player) {
         // Logic for removing the potato from the player
+        ItemStack item = player.getInventory().getItem(player.getInventory().first(CustomItems.PapaCaliente(player, 100)));
     }
 
 }
