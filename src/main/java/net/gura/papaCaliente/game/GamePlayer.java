@@ -3,6 +3,7 @@ package net.gura.papaCaliente.game;
 import net.gura.papaCaliente.PapaCaliente;
 import net.gura.papaCaliente.utils.CustomItems;
 import net.kyori.adventure.text.format.NamedTextColor;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -15,6 +16,8 @@ import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerSwapHandItemsEvent;
 import org.bukkit.inventory.ItemStack;
+
+import static net.gura.papaCaliente.PapaCaliente.plugin;
 
 public class GamePlayer implements Listener {
 
@@ -79,6 +82,7 @@ public class GamePlayer implements Listener {
 
         if (CustomItems.isPapaCaliente(current) || CustomItems.isPapaCaliente(cursor)) {
             e.setCancelled(true);
+            Bukkit.getScheduler().runTaskLater(plugin, player::updateInventory, 1L);
         }
 
     }
@@ -89,6 +93,7 @@ public class GamePlayer implements Listener {
 
         if (CustomItems.isPapaCaliente(item)) {
             e.setCancelled(true);
+            Bukkit.getScheduler().runTaskLater(plugin, player::updateInventory, 1L);
         }
     }
 }
