@@ -60,7 +60,7 @@ public class GamePlayer implements Listener {
 
         }
     }
-    // Event for preventing people from offhanding
+    // Event for preventing people from offhanding or moving the hot potato
     @EventHandler
     public void PreventOffhand(PlayerSwapHandItemsEvent e) {
         Player player = e.getPlayer();
@@ -71,21 +71,24 @@ public class GamePlayer implements Listener {
         }
     }
     @EventHandler
-    public void onInventoryClick(InventoryClickEvent event) {
-        if (!(event.getWhoClicked() instanceof Player player)) return;
+    public void onInventoryClick(InventoryClickEvent e) {
+        if (!(e.getWhoClicked() instanceof Player player)) return;
 
-        ItemStack item = event.getCurrentItem();
-        if (item == null) return;
+        ItemStack current = e.getCurrentItem();
+        ItemStack cursor = e.getCursor();
 
-        if (event.getSlotType() == InventoryType.SlotType.QUICKBAR && event.getHotbarButton() == 40) { // 40 is offhand
-            if (CustomItems.isPapaCaliente(item)) {
-                event.setCancelled(true);
-            }
+        if (CustomItems.isPapaCaliente(current) || CustomItems.isPapaCaliente(cursor)) {
+            e.setCancelled(true);
         }
 
-        if (event.getSlot() == 40 && CustomItems.isPapaCaliente(item)) { // Prevent direct placing in offhand
-            event.setCancelled(true);
+    }
+    @EventHandler
+    public void onInventoryDrag(InventoryDragEvent e) {
+        if (!(e.getWhoClicked() instanceof Player player)) return;
+        ItemStack item = e.getOldCursor();
+
+        if (CustomItems.isPapaCaliente(item)) {
+            e.setCancelled(true);
         }
     }
-
 }
