@@ -16,7 +16,7 @@ public class PlayerManagerGUIListener implements Listener {
     public void ClickItem(InventoryClickEvent event) {
         if (!(event.getWhoClicked() instanceof Player player)) return;
 
-        if (event.getView().getTitle().equals(PlayerManagerGUI.TITLE)) {
+        if (event.getView().title().equals(PlayerManagerGUI.TITLE)) {
             event.setCancelled(true);
 
             if (event.isShiftClick()) {

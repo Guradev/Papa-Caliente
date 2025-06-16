@@ -2,19 +2,22 @@ package net.gura.papaCaliente.gui;
 
 import net.gura.papaCaliente.PapaCaliente;
 import net.gura.papaCaliente.game.GameManager;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import java.util.List;
+
 public class AdminGUI {
-    public static final String TITLE = ChatColor.DARK_RED + "ᴀᴅᴍɪɴɪꜱᴛʀᴀᴅᴏʀ ᴇᴠᴇɴᴛᴏ";
+    public static Component TITLE = Component.text("ᴀᴅᴍɪɴɪꜱᴛʀᴀᴅᴏʀ ᴇᴠᴇɴᴛᴏ");
 
     public static void openGUI(Player admin) {
-        Inventory inv = Bukkit.createInventory(null, 54, TITLE);
+        Inventory inv = Bukkit.createInventory(null, 54, TITLE.color(NamedTextColor.DARK_RED).asComponent());
 
         inv.setItem(10, gameInfo());
         inv.setItem(12, clickItem(Material.LIME_WOOL, "§aᴇᴍᴘᴇᴢᴀʀ ᴇᴠᴇɴᴛᴏ", "Clic para forzar el inicio del evento"));
@@ -32,16 +35,20 @@ public class AdminGUI {
 
         ItemStack info = new ItemStack(Material.PAPER);
         ItemMeta meta = info.getItemMeta();
-        meta.setDisplayName(ChatColor.DARK_RED + "§fɪɴꜰᴏʀᴍᴀᴄɪóɴ ᴇᴠᴇɴᴛᴏ");
+        meta.displayName(Component.text("ɪɴꜰᴏʀᴍᴀᴄɪóɴ ᴇᴠᴇɴᴛᴏ").color(NamedTextColor.DARK_RED));
+        info.setItemMeta(meta);
 
         String state = gm.getGameState().name();
         String players = String.valueOf(gm.getPlayers().size());
         String holder = gm.getCurrentHolder() != null ? gm.getCurrentHolder().getName() : "Ninguno";
 
-        meta.setLore(java.util.List.of(
-                "Estado: " + state,
-                "Jugadores: " + players,
-                "Holder de Papa: " + holder
+        meta.lore(List.of(
+                Component.text("Estado: ", NamedTextColor.GRAY)
+                        .append(Component.text(state, NamedTextColor.YELLOW)),
+                Component.text("Jugadores: ", NamedTextColor.GRAY)
+                        .append(Component.text(String.valueOf(players), NamedTextColor.GREEN)),
+                Component.text("Holder de Papa: ", NamedTextColor.GRAY)
+                        .append(Component.text(holder, NamedTextColor.RED))
         ));
 
         info.setItemMeta(meta);
@@ -51,10 +58,12 @@ public class AdminGUI {
     private static ItemStack clickItem(Material material, String name, String lore) {
         ItemStack item = new ItemStack(material);
         ItemMeta meta = item.getItemMeta();
-        meta.setDisplayName(name);
+        meta.displayName(Component.text(name).color(NamedTextColor.DARK_RED).asComponent());
+
         if (lore != null) {
-            meta.setLore(java.util.List.of("§7" + lore));
+            meta.lore(List.of(Component.text(lore, NamedTextColor.GRAY)));
         }
+
         item.setItemMeta(meta);
         return item;
     }

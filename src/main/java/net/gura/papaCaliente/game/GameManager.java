@@ -59,13 +59,15 @@ public class GameManager {
             return;
         }
 
-        //Elegir a una persona random de la lista para darle la papa caliente
         List<Player> listaPlayers = new ArrayList<>(players);
         if (listaPlayers.isEmpty()) {
             Messenger.broadcast("No hay jugadores disponibles para iniciar el juego.");
             return;
         }
+
         gameState = GameState.CORRIENDO;
+
+        //Elegir a una persona random de la lista para darle la papa caliente
         Collections.shuffle(listaPlayers);
         currentHolder = listaPlayers.get(0);
 
@@ -75,12 +77,16 @@ public class GameManager {
         countdown = new Countdown(plugin, 10,
                 secondsLeft -> {
                     bossbar.ShowToAll(players);
-                    currentHolder.sendMessage("§6¡La papa explotará en §f" + secondsLeft + "s§e!");
+                    currentHolder.sendMessage(
+                            Component.text("¡La papa explotará en ", NamedTextColor.GOLD)
+                                    .append(Component.text(secondsLeft + "s", NamedTextColor.WHITE))
+                                    .append(Component.text("!", NamedTextColor.GOLD))
+                    );
                 },
                 () -> {
                     // Explotó la papa
                     removePotato(currentHolder);
-                    currentHolder.sendMessage("§c¡La papa caliente te explotó!");
+                    currentHolder.sendMessage(Component.text("¡La papa te explotó!").color(NamedTextColor.RED));
                     currentHolder.getWorld().createExplosion(currentHolder.getLocation(), 3F, false, false);
                     removePlayer(currentHolder);
 
@@ -158,8 +164,8 @@ public class GameManager {
         ItemStack item = player.getInventory().getItem(0);
         if (CustomItems.isPapaCaliente(item)) {
             player.getInventory().setItem(4, null);
-            player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_BASS, 1F, 1F);
-            player.sendMessage("§aHas pasado la papa caliente.");
+            player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 10F, 1F);
+            player.sendMessage(Component.text("¡Has pasado la papa caliente!").color(NamedTextColor.GREEN));
         }
     }
 }

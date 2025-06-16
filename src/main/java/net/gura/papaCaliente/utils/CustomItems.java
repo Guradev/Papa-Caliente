@@ -22,8 +22,8 @@ public class CustomItems {
                 "§7Explotará en §f" + (tickstoboom/20) + "s"
         ));
         // Guardamos un identificador en la papa caliente para asegurarnos que sea la correcta.
-        NamespacedKey itemkey = new NamespacedKey(PapaCaliente.getPlugin(), "papa_caliente");
-        meta.getPersistentDataContainer().set(itemkey, PersistentDataType.BYTE,(byte) 1);
+        NamespacedKey NBT = new NamespacedKey(PapaCaliente.getPlugin(), "papa_caliente");
+        meta.getPersistentDataContainer().set(NBT, PersistentDataType.BYTE,(byte) 1);
 
         item.setItemMeta(meta);
         return item;
@@ -32,8 +32,8 @@ public class CustomItems {
     public static boolean isPapaCaliente(ItemStack item) {
         if (item == null || !item.hasItemMeta()) return false;
         ItemMeta meta = item.getItemMeta();
-        NamespacedKey itemkey = new NamespacedKey(PapaCaliente.getPlugin(), "papa_caliente");
-        Byte tag = meta.getPersistentDataContainer().get(itemkey, PersistentDataType.BYTE);
+        NamespacedKey NBT = new NamespacedKey(PapaCaliente.getPlugin(), "papa_caliente");
+        Byte tag = meta.getPersistentDataContainer().get(NBT, PersistentDataType.BYTE);
         return tag != null && tag == (byte) 1;
     }
 

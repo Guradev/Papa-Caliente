@@ -7,9 +7,7 @@ import net.gura.papaCaliente.gui.PlayerManagerGUI;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Sound;
-import org.bukkit.block.data.type.NoteBlock;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -23,21 +21,29 @@ public class PapaCalienteCommand implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, String @NotNull [] args) {
         if (!(commandSender instanceof Player player)) {
-            commandSender.sendMessage("§6Solo jugadores pueden ejecutar este comando.");
+            commandSender.sendMessage("§6No puedes ejecutar este comando desde la consola.");
+            return true;
+        }
+
+        if (!player.hasPermission("papacaliente.admin")) {
+            player.sendMessage(Component.text("No tienes permisos.").color(NamedTextColor.RED));
+            player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 10F, 1F);
             return true;
         }
 
         if (args.length == 2 && args[0].equalsIgnoreCase("gui") && args[1].equalsIgnoreCase("admin")) {
-            if (!player.hasPermission("papacaliente.admin")) {
-                player.sendMessage("§cNo tienes permisos.");
-                return true;
-            }
             AdminGUI.openGUI(player);
             return true;
         }
 
         if (args.length == 1 && args[0].equalsIgnoreCase("start")) {
+            if (gm.isRunning()) {
+                commandSender.sendMessage(Component.text("El evento ya ha sido iniciado").color(NamedTextColor.RED));
+                player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 10F, 1F);
+                return true;
+            }
             gm.startGame();
+            commandSender.sendMessage(Component.text("Has iniciado el evento de papa caliente").color(NamedTextColor.GREEN));
             return true;
         }
 
@@ -61,7 +67,14 @@ public class PapaCalienteCommand implements CommandExecutor {
         }
 
         if (args.length == 1 && args[0].equalsIgnoreCase("stop")) {
+            if (!gm.isRunning()) {
+                commandSender.sendMessage(Component.text("El evento no está activo, inicialo para poder pararlo").color(NamedTextColor.RED));
+                player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 10F, 1F);
+                return true;
+            }
             gm.stopGame();
+            commandSender.sendMessage(Component.text("Has parado el evento de papa caliente").color(NamedTextColor.GREEN));
+            player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 10F, 1F);
             return true;
         }
         if (args.length == 2 && args[0].equalsIgnoreCase("gui") && args[1].equalsIgnoreCase("playermanager")) {

@@ -10,7 +10,6 @@ import java.util.function.Consumer;
 public class Countdown {
 
     private final Plugin plugin;
-    private final int totalSeconds;
     private int secondsLeft;
     private final Consumer<Integer> onTick;
     private final Runnable onFinish;
@@ -19,7 +18,6 @@ public class Countdown {
 
     public Countdown(Plugin plugin, int totalSeconds, Consumer<Integer> onTick, Runnable onFinish) {
         this.plugin = plugin;
-        this.totalSeconds = totalSeconds;
         this.secondsLeft = totalSeconds;
         this.onTick = onTick;
         this.onFinish = onFinish;
