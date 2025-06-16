@@ -3,7 +3,6 @@ package net.gura.papaCaliente.game;
 import net.gura.papaCaliente.logics.Countdown;
 import net.gura.papaCaliente.ui.BossBarHandler;
 import net.gura.papaCaliente.utils.CustomItems;
-import net.gura.papaCaliente.utils.Messenger;
 import net.kyori.adventure.bossbar.BossBar;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -73,16 +72,20 @@ public class GameManager {
 
         gameState = GameState.CORRIENDO;
 
-        //Elegir a una persona random de la lista para darle la papa caliente
+        //Elige a una persona random de la lista para darle la papa caliente
         Collections.shuffle(listaPlayers);
         currentHolder = listaPlayers.get(0);
 
         givePotato(currentHolder);
 
-        // Falta el código para tener una bossbar dinámica (se utilizará adventureapi)
         countdown = new Countdown(plugin, 10,
                 secondsLeft -> {
                     bossbar.ShowToAll(players);
+
+                    float progress = Math.max(0f, secondsLeft / 10f);
+                    bossbar.updateProgress(progress);
+                    bossbar.updateTitle("⏳ ¡" + secondsLeft + "s para explotar!");
+
                     currentHolder.sendMessage(
                             Component.text("¡La papa explotará en ", NamedTextColor.GOLD)
                                     .append(Component.text(secondsLeft + "s", NamedTextColor.WHITE))
@@ -90,26 +93,26 @@ public class GameManager {
                     );
                 },
                 () -> {
-                    // Explotó la papa
                     removePotato(currentHolder);
                     currentHolder.sendMessage(Component.text("¡La papa te explotó!").color(NamedTextColor.RED));
                     currentHolder.getWorld().createExplosion(currentHolder.getLocation(), 3F, false, false);
                     removePlayer(currentHolder);
 
+                    bossbar.HideToAll(players);
+
                     if (players.size() < 2) {
                         stopGame();
-                        bossbar.HideToAll(players);
                     } else {
-                        startGame(); // Repetimos la lógica con otro jugador
+                        startGame();
                     }
                 }
         );
-
         countdown.start();
     }
 
     public void stopGame() {
         gameState = GameState.TERMINADO;
+        bossbar.HideToAll(players);
 
         if (countdown != null) {
             countdown.cancel();
@@ -125,15 +128,44 @@ public class GameManager {
             }
             player.getInventory().setContents(contents);
         }
+
+        Player winner = players.stream().findFirst().orElse(null);
+
+        if (winner == null) return;
+
         for (Player player : Bukkit.getOnlinePlayers()) {
-            Title.Times times = Title.Times.times(Duration.ofSeconds(1), Duration.ofSeconds(3), Duration.ofSeconds(1));
-            Title title = Title.title(
-                    Component.text("¡Evento terminado!").color(NamedTextColor.RED),
-                    Component.text("Gracias por jugar").color(NamedTextColor.GRAY),
-                    times
+            player.playSound(player.getLocation(), Sound.UI_TOAST_CHALLENGE_COMPLETE, 3F, 1F);
+            Title title1 = Title.title(
+                    Component.text("🔥 ¡Final épico! 🔥").color(NamedTextColor.GOLD),
+                    Component.text("La papa ha explotado...").color(NamedTextColor.RED),
+                    Title.Times.times(Duration.ofMillis(500), Duration.ofSeconds(1), Duration.ofMillis(500))
             );
-            player.showTitle(title);
+            player.showTitle(title1);
         }
+
+        Bukkit.getScheduler().runTaskLater(plugin, () -> {
+            for (Player player : Bukkit.getOnlinePlayers()) {
+                player.playSound(player.getLocation(), Sound.UI_TOAST_CHALLENGE_COMPLETE, 3F, 1F);
+                player.showTitle(Title.title(
+                        Component.text("🏆 Ganador: ").color(NamedTextColor.YELLOW)
+                                .append(Component.text(winner.getName(), NamedTextColor.GOLD)),
+                        Component.text("Gracias por jugar").color(NamedTextColor.GRAY),
+                        Title.Times.times(Duration.ofMillis(300), Duration.ofSeconds(2), Duration.ofMillis(300))
+                ));
+            }
+        }, 40L);
+
+        Bukkit.getScheduler().runTaskLater(plugin, () -> {
+            for (Player player : Bukkit.getOnlinePlayers()) {
+                Title title3 = Title.title(
+                        Component.text("¡Gracias por jugar!").color(NamedTextColor.AQUA),
+                        Component.text("¿Estás listo para la próxima ronda?").color(NamedTextColor.GRAY),
+                        Title.Times.times(Duration.ofSeconds(1), Duration.ofSeconds(3), Duration.ofSeconds(1))
+                );
+                player.showTitle(title3);
+            }
+        }, 100L);
+
 
         players.clear();
         currentHolder = null;
@@ -166,7 +198,6 @@ public class GameManager {
     }
 
     private void removePotato(Player player) {
-        // Logic for removing the potato from the player
         ItemStack item = player.getInventory().getItem(0);
         if (CustomItems.isPapaCaliente(item)) {
             player.getInventory().setItem(4, null);

@@ -2,7 +2,10 @@ package net.gura.papaCaliente.game;
 
 import net.gura.papaCaliente.PapaCaliente;
 import net.gura.papaCaliente.utils.CustomItems;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -11,6 +14,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
+import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.event.player.PlayerSwapHandItemsEvent;
 import org.bukkit.inventory.ItemStack;
 
@@ -92,5 +96,52 @@ public class GamePlayer implements Listener {
             e.setCancelled(true);
             Bukkit.getScheduler().runTaskLater(plugin, player::updateInventory, 1L);
         }
+    }
+
+    @EventHandler
+    public void preventPotatoEating(PlayerItemConsumeEvent e) {
+        ItemStack item = e.getItem();
+        if (item.getType() != Material.BAKED_POTATO) return;
+        if (CustomItems.isPapaCaliente(item)) {
+            e.setCancelled(true);
+        }
+    }
+
+    @EventHandler
+    public void preventPotatoDrop(PlayerDropItemEvent e) {
+        ItemStack item = e.getItemDrop().getItemStack();
+        if (item.getType() != Material.BAKED_POTATO) return;
+        if (CustomItems.isPapaCaliente(item)) {
+            e.setCancelled(true);
+        }
+    }
+
+    @EventHandler
+    public void onPlayerInteractEntity(PlayerInteractEntityEvent e) {
+        if (!(e.getRightClicked() instanceof Player target)) return;
+
+        Player clicker = e.getPlayer();
+        GameManager gm = PapaCaliente.getPlugin().getGameManager();
+
+        if (!gm.isInGame(clicker) || !gm.isInGame(target)) return;
+
+        if (!clicker.equals(gm.getCurrentHolder())) return;
+        if (!CustomItems.isPapaCaliente(clicker.getInventory().getItemInMainHand())) return;
+
+        if (clicker.equals(target)) return;
+
+        gm.passPotato(clicker, target);
+
+        clicker.sendMessage(
+                Component.text("¡Has pasado la ", NamedTextColor.GREEN)
+                        .append(Component.text("Papa Caliente", NamedTextColor.RED))
+                        .append(Component.text(" a " + target.getName() + "!", NamedTextColor.GREEN))
+        );
+
+        target.sendMessage(
+                Component.text("¡Te ha pasado la ", NamedTextColor.RED)
+                        .append(Component.text("Papa Caliente", NamedTextColor.GOLD))
+                        .append(Component.text(" " + clicker.getName() + "!", NamedTextColor.RED))
+        );
     }
 }
