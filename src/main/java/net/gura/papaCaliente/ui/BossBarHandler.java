@@ -18,13 +18,13 @@ public class BossBarHandler {
         this.bar = BossBar.bossBar(name, progress, color, overlay);
     }
 
-    public void show(Audience audience, Player player) {
-        audience.showBossBar(bar);
+    public void show(Player player) {
+        player.showBossBar(bar);
         viewers.add(player);
     }
 
-    public void hide(Audience audience, Player player) {
-        audience.hideBossBar(bar);
+    public void hide(Player player) {
+        player.hideBossBar(bar);
         viewers.remove(player);
     }
     public void updateTitle(String title) {
@@ -43,8 +43,8 @@ public class BossBarHandler {
         bar.overlay(overlay);
     }
 
-    public void hideAll(Audience audience) {
-        audience.hideBossBar(bar);
+    public void hideAll(Player player) {
+        player.hideBossBar(bar);
         viewers.clear();
     }
 }

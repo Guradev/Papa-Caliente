@@ -1,16 +1,24 @@
 package net.gura.papaCaliente.game;
 
+import net.gura.papaCaliente.logics.Countdown;
+import net.gura.papaCaliente.ui.BossBarHandler;
 import net.gura.papaCaliente.utils.CustomItems;
+import net.kyori.adventure.bossbar.BossBar;
+import org.bukkit.ChatColor;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.*;
 
+import static net.gura.papaCaliente.PapaCaliente.plugin;
+
 public class GameManager {
+    private Countdown countdown;
     private GameState gameState = GameState.ESPERANDO;
     private final Set<Player> players = new HashSet<>();
     private Player currentHolder = null;
+    BossBarHandler bossbar = new BossBarHandler("Papa Caliente", 1f, BossBar.Color.YELLOW, BossBar.Overlay.PROGRESS);
 
     public GameState getGameState() {
         return gameState;
@@ -24,8 +32,17 @@ public class GameManager {
 
     }
 
-    public void removePlayer() {
+    public void removePlayer(Player player) {
 
+        players.remove(player);
+
+        if (player.equals(currentHolder)) {
+            removePotato(player);
+            currentHolder = null; // O elegir nuevo holder si hay jugadores suficientes
+        }
+        if (players.size() <= 1) {
+            stopGame();
+        }
     }
 
     public void startGame() {
@@ -42,7 +59,28 @@ public class GameManager {
 
         givePotato(currentHolder);
 
-        //Falta implementar logica del juego en si
+        // Falta el código para tener una bossbar dinámica (se utilizará adventureapi)
+        countdown = new Countdown(plugin, 10,
+                secondsLeft -> {
+                    bossbar.show()
+                    currentHolder.sendMessage("§6¡La papa explotará en §f" + secondsLeft + "s§e!");
+                },
+                () -> {
+                    // Explotó la papa
+                    removePotato(currentHolder);
+                    currentHolder.sendMessage("§c¡La papa caliente te explotó!");
+                    currentHolder.getWorld().createExplosion(currentHolder.getLocation(), 3F, false, false);
+                    removePlayer(currentHolder);
+
+                    if (players.size() < 2) {
+                        stopGame();
+                    } else {
+                        startGame(); // Repetimos la lógica con otro jugador
+                    }
+                }
+        );
+
+        countdown.start();
     }
 
     public void stopGame() {
