@@ -5,6 +5,7 @@ import net.gura.papaCaliente.game.GameManager;
 import net.gura.papaCaliente.gui.AdminGUI;
 import net.gura.papaCaliente.gui.PlayerManagerGUI;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -86,7 +87,7 @@ public class PlayerManagerGUIListener implements Listener {
 
                 OfflinePlayer target = skullMeta.getOwningPlayer();
                 if (target == null || !target.isOnline()) {
-                    admin.sendMessage("§cJugador no disponible.");
+                    admin.sendMessage(Component.text("Jugador no disponible.").color(NamedTextColor.RED));
                     return;
                 }
 

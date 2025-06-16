@@ -8,6 +8,8 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.title.Title;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.Particle;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -95,7 +97,11 @@ public class GameManager {
                 () -> {
                     removePotato(currentHolder);
                     currentHolder.sendMessage(Component.text("¡La papa te explotó!").color(NamedTextColor.RED));
-                    currentHolder.getWorld().createExplosion(currentHolder.getLocation(), 3F, false, false);
+                    Location loc = currentHolder.getLocation();
+                    // Simulamos explosión
+                    currentHolder.getWorld().spawnParticle(Particle.EXPLOSION, loc, 1);
+                    currentHolder.getWorld().playSound(loc, Sound.ENTITY_GENERIC_EXPLODE, 2f, 1f);
+                    currentHolder.damage(100);
                     removePlayer(currentHolder);
 
                     bossbar.HideToAll(players);
@@ -112,7 +118,7 @@ public class GameManager {
 
     public void stopGame() {
         gameState = GameState.TERMINADO;
-        bossbar.HideToAll(players);
+        Bukkit.getScheduler().runTaskLater(plugin, () -> bossbar.HideToAll(players), 150L);
 
         if (countdown != null) {
             countdown.cancel();
@@ -133,15 +139,17 @@ public class GameManager {
 
         if (winner == null) return;
 
-        for (Player player : Bukkit.getOnlinePlayers()) {
-            player.playSound(player.getLocation(), Sound.UI_TOAST_CHALLENGE_COMPLETE, 3F, 1F);
-            Title title1 = Title.title(
-                    Component.text("🔥 ¡Final épico! 🔥").color(NamedTextColor.GOLD),
-                    Component.text("La papa ha explotado...").color(NamedTextColor.RED),
-                    Title.Times.times(Duration.ofMillis(500), Duration.ofSeconds(1), Duration.ofMillis(500))
-            );
-            player.showTitle(title1);
-        }
+        Bukkit.getScheduler().runTaskLater(plugin, () -> {
+                    for (Player player : Bukkit.getOnlinePlayers()) {
+                        player.playSound(player.getLocation(), Sound.ENTITY_FIREWORK_ROCKET_BLAST, 3F, 1F);
+                        Title title1 = Title.title(
+                                Component.text("🔥 ¡Final épico! 🔥").color(NamedTextColor.GOLD),
+                                Component.text("La papa ha explotado...").color(NamedTextColor.RED),
+                                Title.Times.times(Duration.ofMillis(100), Duration.ofSeconds(1), Duration.ofMillis(500))
+                        );
+                        player.showTitle(title1);
+                    }
+    },40L);
 
         Bukkit.getScheduler().runTaskLater(plugin, () -> {
             for (Player player : Bukkit.getOnlinePlayers()) {
@@ -200,7 +208,7 @@ public class GameManager {
     private void removePotato(Player player) {
         ItemStack item = player.getInventory().getItem(0);
         if (CustomItems.isPapaCaliente(item)) {
-            player.getInventory().setItem(4, null);
+            player.getInventory().setItem(0, null);
             player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 10F, 1F);
             player.sendMessage(Component.text("¡Has pasado la papa caliente!").color(NamedTextColor.GREEN));
         }

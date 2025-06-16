@@ -9,7 +9,9 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityPickupItemEvent;
+import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
@@ -110,7 +112,7 @@ public class GamePlayer implements Listener {
     @EventHandler
     public void preventPotatoDrop(PlayerDropItemEvent e) {
         ItemStack item = e.getItemDrop().getItemStack();
-        if (item.getType() != Material.BAKED_POTATO) return;
+        if (item.getType() != Material.POTATO) return;
         if (CustomItems.isPapaCaliente(item)) {
             e.setCancelled(true);
         }
@@ -143,5 +145,42 @@ public class GamePlayer implements Listener {
                         .append(Component.text("Papa Caliente", NamedTextColor.GOLD))
                         .append(Component.text(" " + clicker.getName() + "!", NamedTextColor.RED))
         );
+    }
+
+    @EventHandler
+    public void onPlayerHitPlayer(EntityDamageByEntityEvent e) {
+        if (!(e.getDamager() instanceof Player clicker)) return;
+        if (!(e.getEntity() instanceof Player target)) return;
+
+        if (!gm.isInGame(clicker) || !gm.isInGame(target)) return;
+
+        if (!clicker.equals(gm.getCurrentHolder())) return;
+        if (!CustomItems.isPapaCaliente(clicker.getInventory().getItemInMainHand())) return;
+        if (clicker.equals(target)) return;
+
+        gm.passPotato(clicker, target);
+
+        clicker.sendMessage(
+                Component.text("¡Has pasado la ", NamedTextColor.GREEN)
+                        .append(Component.text("Papa Caliente", NamedTextColor.RED))
+                        .append(Component.text(" a " + target.getName() + "!", NamedTextColor.GREEN))
+        );
+
+        target.sendMessage(
+                Component.text("¡Te ha pasado la ", NamedTextColor.RED)
+                        .append(Component.text("Papa Caliente", NamedTextColor.GOLD))
+                        .append(Component.text(" " + clicker.getName() + "!", NamedTextColor.RED))
+        );
+
+        e.setCancelled(true);
+    }
+
+    @EventHandler
+    public void playerDeath(PlayerDeathEvent e) {
+        Player player = e.getEntity();
+
+        if(gm.isInGame(player)) {
+            e.deathMessage(Component.empty());
+        }
     }
 }
