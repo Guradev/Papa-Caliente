@@ -14,10 +14,10 @@ import java.util.List;
 
 public class ModGUI {
 
-    public static final Component TITLE = Component.text("ᴍᴏᴅᴇʀᴀᴄɪóɴ ᴇᴠᴇɴᴛᴏ");
+    public static final Component TITLE = Component.text("ᴍᴏᴅᴇʀᴀᴄɪóɴ ᴇᴠᴇɴᴛᴏ").color(NamedTextColor.BLUE);
 
     public static void openGUI(Player mod) {
-        Inventory inv = Bukkit.createInventory(null, 54, TITLE.color(NamedTextColor.BLUE).asComponent());
+        Inventory inv = Bukkit.createInventory(null, 54, TITLE);
 
     }
 

@@ -42,6 +42,11 @@ public class PapaCalienteCommand implements CommandExecutor {
                 player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 10F, 1F);
                 return true;
             }
+            if (gm.getPlayers().size() < 2 && !gm.getIsTesting()) {
+                commandSender.sendMessage(Component.text("No hay suficientes jugadores para iniciar el evento, requeridos al menos 2.").color(NamedTextColor.RED));
+                player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 10F, 1F);
+                return true;
+            }
             gm.startGame();
             commandSender.sendMessage(Component.text("Has iniciado el evento de papa caliente").color(NamedTextColor.GREEN));
             return true;

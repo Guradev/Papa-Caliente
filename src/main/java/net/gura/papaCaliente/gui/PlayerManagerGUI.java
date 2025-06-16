@@ -3,7 +3,6 @@ package net.gura.papaCaliente.gui;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
@@ -14,9 +13,9 @@ import java.util.List;
 
 public class PlayerManagerGUI {
 
-    public static final Component TITLE =  Component.text("ɢᴇꜱᴛɪóɴ ᴊᴜɢᴀᴅᴏʀᴇꜱ");
+    public static final Component TITLE =  Component.text("ɢᴇꜱᴛɪóɴ ᴊᴜɢᴀᴅᴏʀᴇꜱ").color(NamedTextColor.DARK_RED);
     public static void openGUI(Player admin) {
-        Inventory inv = Bukkit.createInventory(null, 54, TITLE.color(NamedTextColor.DARK_RED).asComponent());
+        Inventory inv = Bukkit.createInventory(null, 54, TITLE);
         admin.openInventory(inv);
 
         inv.setItem(45, clickItem(Material.ARROW, "§aʀᴇᴛʀᴏᴄᴇᴅᴇʀ", "Vuelve al menú principal"));

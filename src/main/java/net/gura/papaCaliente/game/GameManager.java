@@ -25,7 +25,7 @@ public class GameManager {
     private Player currentHolder = null;
     BossBarHandler bossbar = new BossBarHandler("Papa Caliente", 1f, BossBar.Color.YELLOW, BossBar.Overlay.PROGRESS);
 
-    Boolean isTesting = true; // For testing purposes only (disable in production)
+    private final Boolean isTesting = true; // For testing purposes only (disable in production)
 
     public GameState getGameState() {
         return gameState;
@@ -33,6 +33,10 @@ public class GameManager {
 
     public boolean isRunning() {
         return gameState == GameState.CORRIENDO;
+    }
+
+    public boolean getIsTesting() {
+        return isTesting;
     }
 
     public void addPlayer(Player player) {
@@ -55,13 +59,11 @@ public class GameManager {
 
     public void startGame() {
         if (players.size() < 2 && !isTesting) {
-            Messenger.broadcast("No hay suficientes jugadores para iniciar el evento.");
             return;
         }
 
         List<Player> listaPlayers = new ArrayList<>(players);
         if (listaPlayers.isEmpty()) {
-            Messenger.broadcast("No hay jugadores disponibles para iniciar el juego.");
             return;
         }
 
@@ -154,7 +156,7 @@ public class GameManager {
     }
 
     private void givePotato(Player player) {
-        ItemStack papa = CustomItems.PapaCaliente(player, 100);
+        ItemStack papa = CustomItems.PapaCaliente(player);
         player.getInventory().setItem(0, papa);
         Bukkit.getScheduler().runTaskLater(plugin, player::updateInventory, 1L);
     }

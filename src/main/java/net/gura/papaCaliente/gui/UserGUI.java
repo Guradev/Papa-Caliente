@@ -13,11 +13,10 @@ import org.bukkit.inventory.meta.ItemMeta;
 import java.util.List;
 
 public class UserGUI implements Listener {
-    public static final Component TITLE = Component.text("ᴘᴀᴘᴀ ᴄᴀʟɪᴇɴᴛᴇ");
-
+    public static final Component TITLE = Component.text("ᴘᴀᴘᴀ ᴄᴀʟɪᴇɴᴛᴇ").color(NamedTextColor.DARK_GRAY);
 
     public static void openGUI(Player usuario) {
-        Inventory inv = Bukkit.createInventory(null, 54, TITLE.color(NamedTextColor.DARK_GRAY).asComponent());
+        Inventory inv = Bukkit.createInventory(null, 54, TITLE);
 
     }
 

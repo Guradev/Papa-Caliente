@@ -14,10 +14,10 @@ import org.bukkit.inventory.meta.ItemMeta;
 import java.util.List;
 
 public class AdminGUI {
-    public static Component TITLE = Component.text("ᴀᴅᴍɪɴɪꜱᴛʀᴀᴅᴏʀ ᴇᴠᴇɴᴛᴏ");
+    public static final Component TITLE = Component.text("ᴀᴅᴍɪɴɪꜱᴛʀᴀᴅᴏʀ ᴇᴠᴇɴᴛᴏ").color(NamedTextColor.DARK_RED);
 
     public static void openGUI(Player admin) {
-        Inventory inv = Bukkit.createInventory(null, 54, TITLE.color(NamedTextColor.DARK_RED).asComponent());
+        Inventory inv = Bukkit.createInventory(null, 54, TITLE);
 
         inv.setItem(10, gameInfo());
         inv.setItem(12, clickItem(Material.LIME_WOOL, "§aᴇᴍᴘᴇᴢᴀʀ ᴇᴠᴇɴᴛᴏ", "Clic para forzar el inicio del evento"));
