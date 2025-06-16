@@ -4,7 +4,6 @@ import net.gura.papaCaliente.logics.Countdown;
 import net.gura.papaCaliente.ui.BossBarHandler;
 import net.gura.papaCaliente.utils.CustomItems;
 import net.kyori.adventure.bossbar.BossBar;
-import org.bukkit.ChatColor;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -62,7 +61,7 @@ public class GameManager {
         // Falta el código para tener una bossbar dinámica (se utilizará adventureapi)
         countdown = new Countdown(plugin, 10,
                 secondsLeft -> {
-                    bossbar.show()
+                    bossbar.ShowToAll(players);
                     currentHolder.sendMessage("§6¡La papa explotará en §f" + secondsLeft + "s§e!");
                 },
                 () -> {

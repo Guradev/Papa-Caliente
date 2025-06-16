@@ -23,6 +23,20 @@ public class BossBarHandler {
         viewers.add(player);
     }
 
+    public void ShowToAll(Set<Player> players) {
+        for (Player player : players) {
+            player.showBossBar(bar);
+            viewers.add(player);
+        }
+    }
+
+    public void HideToAll(Set<Player> players) {
+        for (Player player : players) {
+            player.hideBossBar(bar);
+            viewers.remove(player);
+        }
+    }
+
     public void hide(Player player) {
         player.hideBossBar(bar);
         viewers.remove(player);
