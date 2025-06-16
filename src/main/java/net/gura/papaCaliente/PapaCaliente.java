@@ -27,7 +27,6 @@ public final class PapaCaliente extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new PlayerManagerGUIListener(), this);
         getServer().getPluginManager().registerEvents(new UserGUIListener(), this);
         getServer().getPluginManager().registerEvents(new GamePlayer(), this);
-        getServer().getPluginManager().registerEvents(new PlayerListener(), this);
 
         getServer().getConsoleSender().sendMessage("Evento Papa Caliente Habilitado " + "Versión " + version);
         getServer().getConsoleSender().sendMessage("Made by Gura1");

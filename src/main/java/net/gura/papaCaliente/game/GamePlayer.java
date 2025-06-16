@@ -2,13 +2,18 @@ package net.gura.papaCaliente.game;
 
 import net.gura.papaCaliente.PapaCaliente;
 import net.gura.papaCaliente.utils.CustomItems;
+import net.kyori.adventure.text.format.NamedTextColor;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityPickupItemEvent;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
+import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
+import org.bukkit.event.player.PlayerSwapHandItemsEvent;
 import org.bukkit.inventory.ItemStack;
 
 public class GamePlayer implements Listener {
@@ -55,4 +60,32 @@ public class GamePlayer implements Listener {
 
         }
     }
+    // Event for preventing people from offhanding
+    @EventHandler
+    public void PreventOffhand(PlayerSwapHandItemsEvent e) {
+        Player player = e.getPlayer();
+        ItemStack main = player.getInventory().getItemInMainHand();
+
+        if (CustomItems.isPapaCaliente(main)) {
+            e.setCancelled(true);
+        }
+    }
+    @EventHandler
+    public void onInventoryClick(InventoryClickEvent event) {
+        if (!(event.getWhoClicked() instanceof Player player)) return;
+
+        ItemStack item = event.getCurrentItem();
+        if (item == null) return;
+
+        if (event.getSlotType() == InventoryType.SlotType.QUICKBAR && event.getHotbarButton() == 40) { // 40 is offhand
+            if (CustomItems.isPapaCaliente(item)) {
+                event.setCancelled(true);
+            }
+        }
+
+        if (event.getSlot() == 40 && CustomItems.isPapaCaliente(item)) { // Prevent direct placing in offhand
+            event.setCancelled(true);
+        }
+    }
+
 }

@@ -9,7 +9,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class AdminCommand implements CommandExecutor {
     @Override
-    public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, String[] args) {
+    public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, String @NotNull [] args) {
         if (!(commandSender instanceof Player player)) {
             commandSender.sendMessage("§cSolo jugadores pueden ejecutar este comando.");
             return true;

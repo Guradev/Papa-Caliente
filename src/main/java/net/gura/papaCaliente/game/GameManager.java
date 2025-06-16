@@ -3,11 +3,17 @@ package net.gura.papaCaliente.game;
 import net.gura.papaCaliente.logics.Countdown;
 import net.gura.papaCaliente.ui.BossBarHandler;
 import net.gura.papaCaliente.utils.CustomItems;
+import net.gura.papaCaliente.utils.Messenger;
 import net.kyori.adventure.bossbar.BossBar;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.title.Title;
+import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+import java.time.Duration;
 import java.util.*;
 
 import static net.gura.papaCaliente.PapaCaliente.plugin;
@@ -19,6 +25,8 @@ public class GameManager {
     private Player currentHolder = null;
     BossBarHandler bossbar = new BossBarHandler("Papa Caliente", 1f, BossBar.Color.YELLOW, BossBar.Overlay.PROGRESS);
 
+    Boolean isTesting = true; // For testing purposes only (disable in production)
+
     public GameState getGameState() {
         return gameState;
     }
@@ -27,8 +35,9 @@ public class GameManager {
         return gameState == GameState.CORRIENDO;
     }
 
-    public void addPlayer() {
-
+    public void addPlayer(Player player) {
+        players.add(player);
+        player.sendMessage("Fuiste agregado al evento de papa caliente.");
     }
 
     public void removePlayer(Player player) {
@@ -45,7 +54,8 @@ public class GameManager {
     }
 
     public void startGame() {
-        if (players.size() < 2) {
+        if (players.size() < 2 && !isTesting) {
+            Messenger.broadcast("No hay suficientes jugadores para iniciar el evento.");
             return;
         }
 
@@ -85,11 +95,36 @@ public class GameManager {
     public void stopGame() {
         gameState = GameState.TERMINADO;
 
-        // Limpiamos los players del set y quitamos el current holder
+        if (countdown != null) {
+            countdown.cancel();
+            countdown = null;
+        }
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            ItemStack[] contents = player.getInventory().getContents();
+            for (int i = 0; i < contents.length; i++) {
+                ItemStack item = contents[i];
+                if (CustomItems.isPapaCaliente(item)) {
+                    contents[i] = null;
+                }
+            }
+            player.getInventory().setContents(contents);
+        }
+
+        if (bossbar != null) {
+            bossbar.HideToAll(players);
+        }
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            Title.Times times = Title.Times.times(Duration.ofSeconds(1), Duration.ofSeconds(3), Duration.ofSeconds(1));
+            Title title = Title.title(
+                    Component.text("¡Evento terminado!").color(NamedTextColor.RED),
+                    Component.text("Gracias por jugar").color(NamedTextColor.GRAY),
+                    times
+            );
+            player.showTitle(title);
+        }
+
         players.clear();
         currentHolder = null;
-
-        //Falta añadir logica que se termine el juego de forma correcta, con titulos, etc.
     }
 
     public Set<Player> getPlayers() {
