@@ -23,10 +23,6 @@ public class Countdown {
         this.onFinish = onFinish;
     }
 
-    public int getSecondsLeft() {
-        return secondsLeft;
-    }
-
 
     public void start() {
         this.task = Bukkit.getScheduler().runTaskTimer(plugin, () -> {
