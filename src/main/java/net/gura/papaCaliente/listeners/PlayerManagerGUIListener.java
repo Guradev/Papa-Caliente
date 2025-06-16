@@ -72,13 +72,13 @@ public class PlayerManagerGUIListener implements Listener {
 
             case SLIME_BALL -> {
                 Bukkit.getOnlinePlayers().forEach(gm::addPlayer);
-                admin.sendMessage("§aTodos los jugadores online fueron añadidos al evento.");
+                admin.sendMessage(Component.text("Todos los jugadores online fueron añadidos al evento.").color(NamedTextColor.GREEN));
                 PlayerManagerGUI.openGUI(admin, currentPage);
             }
 
             case TNT -> {
                 gm.getPlayers().forEach(gm::removePlayer);
-                admin.sendMessage("§cTodos los jugadores fueron eliminados del evento.");
+                admin.sendMessage(Component.text("Todos los jugadores fueron eliminados del evento.").color(NamedTextColor.RED));
                 PlayerManagerGUI.openGUI(admin, currentPage);
             }
 
@@ -95,12 +95,12 @@ public class PlayerManagerGUIListener implements Listener {
 
                 if (event.getClick() == ClickType.LEFT) {
                     admin.teleport(targetPlayer);
-                    admin.sendMessage("§aTeletransportado a §f" + targetPlayer.getName());
+                    admin.sendMessage(Component.text("Teletransportando a §f" + targetPlayer.getName()));
                     admin.playSound(admin.getLocation(), Sound.ENTITY_ENDERMAN_TELEPORT, 1F, 1F);
                 } else if (event.getClick() == ClickType.RIGHT) {
                     gm.removePlayer(targetPlayer);
                     admin.sendMessage("§c" + targetPlayer.getName() + " fue eliminado del evento.");
-                    targetPlayer.sendMessage("§cHas sido eliminado del evento por un administrador.");
+                    targetPlayer.sendMessage(Component.text("Has sido eliminado del evento."));
                     PlayerManagerGUI.openGUI(admin, currentPage);
                 }
             }

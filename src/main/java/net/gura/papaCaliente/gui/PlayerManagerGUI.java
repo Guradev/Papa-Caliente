@@ -76,8 +76,8 @@ public class PlayerManagerGUI {
             lore.add(Component.text("¡Tiene la papa caliente!", NamedTextColor.RED).decoration(TextDecoration.ITALIC, false));
         }
 
-        lore.add(Component.text("Click izquierdo: Teletransportarse", NamedTextColor.GRAY).decoration(TextDecoration.ITALIC, false));
-        lore.add(Component.text("Click derecho: Eliminar del juego", NamedTextColor.GRAY).decoration(TextDecoration.ITALIC, false));
+        lore.add(Component.text("Click izquierdo para teletransportarte al jugador", NamedTextColor.GRAY).decoration(TextDecoration.ITALIC, false));
+        lore.add(Component.text("Click derecho para eliminarlo del evento", NamedTextColor.GRAY).decoration(TextDecoration.ITALIC, false));
 
         meta.lore(lore);
         head.setItemMeta(meta);

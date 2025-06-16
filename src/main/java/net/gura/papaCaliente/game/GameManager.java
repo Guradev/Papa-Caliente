@@ -53,9 +53,6 @@ public class GameManager {
             removePotato(player);
             currentHolder = null;
         }
-        if (players.size() <= 1) {
-            stopGame();
-        }
     }
 
     public boolean isInGame(Player player) {
@@ -167,8 +164,8 @@ public class GameManager {
             for (Player player : Bukkit.getOnlinePlayers()) {
                 Title title3 = Title.title(
                         Component.text("¡Gracias por jugar!").color(NamedTextColor.AQUA),
-                        Component.text("¿Estás listo para la próxima ronda?").color(NamedTextColor.GRAY),
-                        Title.Times.times(Duration.ofSeconds(1), Duration.ofSeconds(3), Duration.ofSeconds(1))
+                        Component.empty(),
+                        Title.Times.times(Duration.ofSeconds(2), Duration.ofSeconds(5), Duration.ofSeconds(2))
                 );
                 player.showTitle(title3);
             }
@@ -210,7 +207,6 @@ public class GameManager {
         if (CustomItems.isPapaCaliente(item)) {
             player.getInventory().setItem(0, null);
             player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 10F, 1F);
-            player.sendMessage(Component.text("¡Has pasado la papa caliente!").color(NamedTextColor.GREEN));
         }
     }
 }
