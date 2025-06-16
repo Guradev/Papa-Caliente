@@ -31,7 +31,7 @@ public class PapaCalienteCommand implements CommandExecutor {
             return true;
         }
 
-        if (args.length == 2 && args[0].equalsIgnoreCase("gui") && args[1].equalsIgnoreCase("admin")) {
+        if (args.length == 0) {
             AdminGUI.openGUI(player);
             return true;
         }

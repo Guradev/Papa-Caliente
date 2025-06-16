@@ -104,7 +104,7 @@ public class GameManager {
                     currentHolder.damage(100);
                     removePlayer(currentHolder);
 
-                    bossbar.HideToAll(players);
+                    bossbar.HideToAll();
 
                     if (players.size() < 2) {
                         stopGame();
@@ -118,7 +118,7 @@ public class GameManager {
 
     public void stopGame() {
         gameState = GameState.TERMINADO;
-        Bukkit.getScheduler().runTaskLater(plugin, () -> bossbar.HideToAll(players), 150L);
+        Bukkit.getScheduler().runTaskLater(plugin, bossbar::HideToAll, 3L);
 
         if (countdown != null) {
             countdown.cancel();

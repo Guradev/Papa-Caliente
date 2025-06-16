@@ -30,11 +30,11 @@ public class BossBarHandler {
         }
     }
 
-    public void HideToAll(Set<Player> players) {
-        for (Player player : players) {
+    public void HideToAll() {
+        for (Player player : new HashSet<>(viewers)) {
             player.hideBossBar(bar);
-            viewers.remove(player);
         }
+        viewers.clear();
     }
 
     public void hide(Player player) {
