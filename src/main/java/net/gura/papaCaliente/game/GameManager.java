@@ -6,6 +6,7 @@ import net.gura.papaCaliente.utils.CustomItems;
 import net.kyori.adventure.bossbar.BossBar;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.format.TextDecoration;
 import net.kyori.adventure.title.Title;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -140,7 +141,9 @@ public class GameManager {
                     for (Player player : Bukkit.getOnlinePlayers()) {
                         player.playSound(player.getLocation(), Sound.ENTITY_FIREWORK_ROCKET_BLAST, 3F, 1F);
                         Title title1 = Title.title(
-                                Component.text("🔥 ¡Final épico! 🔥").color(NamedTextColor.GOLD),
+                                Component.text("🔥 ¡Épico! 🔥")
+                                        .color(NamedTextColor.GOLD)
+                                        .decorate(TextDecoration.BOLD),
                                 Component.text("La papa ha explotado...").color(NamedTextColor.RED),
                                 Title.Times.times(Duration.ofMillis(100), Duration.ofSeconds(1), Duration.ofMillis(500))
                         );
@@ -152,7 +155,9 @@ public class GameManager {
             for (Player player : Bukkit.getOnlinePlayers()) {
                 player.playSound(player.getLocation(), Sound.UI_TOAST_CHALLENGE_COMPLETE, 3F, 1F);
                 player.showTitle(Title.title(
-                        Component.text("🏆 Ganador: ").color(NamedTextColor.YELLOW)
+                        Component.text("🏆 GANADOR:  ")
+                                .color(NamedTextColor.YELLOW)
+                                .decorate(TextDecoration.BOLD)
                                 .append(Component.text(winner.getName(), NamedTextColor.GOLD)),
                         Component.text("Gracias por jugar").color(NamedTextColor.GRAY),
                         Title.Times.times(Duration.ofMillis(300), Duration.ofSeconds(2), Duration.ofMillis(300))
