@@ -18,6 +18,7 @@ public class UserGUI implements Listener {
 
     public static void openGUI(Player usuario) {
         Inventory inv = Bukkit.createInventory(null, 54, TITLE);
+        usuario.openInventory(inv);
 
     }
 

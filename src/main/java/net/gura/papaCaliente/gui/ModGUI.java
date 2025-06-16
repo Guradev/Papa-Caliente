@@ -19,6 +19,7 @@ public class ModGUI {
 
     public static void openGUI(Player mod) {
         Inventory inv = Bukkit.createInventory(null, 54, TITLE);
+        mod.openInventory(inv);
 
     }
 

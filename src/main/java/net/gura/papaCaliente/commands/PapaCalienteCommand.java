@@ -3,7 +3,9 @@ package net.gura.papaCaliente.commands;
 import net.gura.papaCaliente.PapaCaliente;
 import net.gura.papaCaliente.game.GameManager;
 import net.gura.papaCaliente.gui.AdminGUI;
+import net.gura.papaCaliente.gui.ModGUI;
 import net.gura.papaCaliente.gui.PlayerManagerGUI;
+import net.gura.papaCaliente.gui.UserGUI;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
@@ -33,6 +35,24 @@ public class PapaCalienteCommand implements CommandExecutor {
 
         if (args.length == 0) {
             AdminGUI.openGUI(player);
+            return true;
+        }
+
+        if (args.length >= 2 && args[0].equalsIgnoreCase("gui")) {
+            //if (args.length < 2) {
+            //    return true;
+            //}
+            switch (args[1].toLowerCase()) {
+                case "usuario":
+                    UserGUI.openGUI(player);
+                    break;
+                case "mod":
+                    ModGUI.openGUI(player);
+                    break;
+                case "admin":
+                    AdminGUI.openGUI(player);
+                    break;
+            }
             return true;
         }
 
