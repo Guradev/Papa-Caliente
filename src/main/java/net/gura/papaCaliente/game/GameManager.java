@@ -37,7 +37,7 @@ public class GameManager {
 
     public void addPlayer(Player player) {
         players.add(player);
-        player.sendMessage("Fuiste agregado al evento de papa caliente.");
+        player.sendMessage(Component.text("¡Fuiste agregado al evento de papa caliente!").color(NamedTextColor.GOLD));
     }
 
     public void removePlayer(Player player) {
