@@ -50,11 +50,15 @@ public class GameManager {
 
         if (player.equals(currentHolder)) {
             removePotato(player);
-            currentHolder = null; // O elegir nuevo holder si hay jugadores suficientes
+            currentHolder = null;
         }
         if (players.size() <= 1) {
             stopGame();
         }
+    }
+
+    public boolean isInGame(Player player) {
+        return players.contains(player);
     }
 
     public void startGame() {

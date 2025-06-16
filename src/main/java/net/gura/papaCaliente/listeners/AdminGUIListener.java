@@ -64,13 +64,9 @@ public class AdminGUIListener implements Listener {
                 }
             }
             case PLAYER_HEAD -> {
-                if (!gm.isRunning()) {
-                    player.sendMessage(Component.text("¡El evento aún no ha iniciado!").color(NamedTextColor.RED));
-                    player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 10F, 1F);
-                    return;
-                }
-                PlayerManagerGUI.openGUI(player);
+                PlayerManagerGUI.openGUI(player,1);
                 player.sendMessage(Component.text("Abriendo menu de gestión de jugadores...").color(NamedTextColor.AQUA));
+                player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 10F, 1F);
             }
             case BARRIER -> player.closeInventory();
         }

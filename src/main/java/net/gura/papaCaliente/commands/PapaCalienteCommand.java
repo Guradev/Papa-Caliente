@@ -83,7 +83,7 @@ public class PapaCalienteCommand implements CommandExecutor {
             return true;
         }
         if (args.length == 2 && args[0].equalsIgnoreCase("gui") && args[1].equalsIgnoreCase("playermanager")) {
-            PlayerManagerGUI.openGUI(player);
+            PlayerManagerGUI.openGUI(player,1);
             return true;
         }
         return true;

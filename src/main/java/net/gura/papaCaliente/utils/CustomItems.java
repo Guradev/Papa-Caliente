@@ -3,6 +3,7 @@ package net.gura.papaCaliente.utils;
 import net.gura.papaCaliente.PapaCaliente;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
@@ -18,11 +19,10 @@ public class CustomItems {
     public static ItemStack PapaCaliente(Player holder) {
         ItemStack item = new ItemStack(Material.POTATO);
         ItemMeta meta = item.getItemMeta();
-        meta.displayName(Component.text("¡Papa Caliente!").color(NamedTextColor.RED));
+        meta.displayName(Component.text("¡Papa Caliente!").color(NamedTextColor.DARK_RED).decoration(TextDecoration.ITALIC, false));
         meta.lore(List.of(
-                Component.text("Esta es la papa caliente", NamedTextColor.GRAY),
-                Component.text("Explotará en ", NamedTextColor.GRAY)
-                        .append(Component.text("TEST" + "s", NamedTextColor.WHITE))
+                Component.text("Esta es la papa caliente", NamedTextColor.GRAY).decoration(TextDecoration.ITALIC, false),
+                Component.text("¡Cuidado que puede explotar!", NamedTextColor.RED).decoration(TextDecoration.ITALIC, false)
         ));
         // Guardamos un identificador en la papa caliente para asegurarnos que sea la correcta.
         NamespacedKey NBT = new NamespacedKey(PapaCaliente.getPlugin(), "papa_caliente");

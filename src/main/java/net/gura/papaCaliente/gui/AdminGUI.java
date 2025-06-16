@@ -4,6 +4,7 @@ import net.gura.papaCaliente.PapaCaliente;
 import net.gura.papaCaliente.game.GameManager;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -35,7 +36,7 @@ public class AdminGUI {
 
         ItemStack info = new ItemStack(Material.PAPER);
         ItemMeta meta = info.getItemMeta();
-        meta.displayName(Component.text("ɪɴꜰᴏʀᴍᴀᴄɪóɴ ᴇᴠᴇɴᴛᴏ").color(NamedTextColor.DARK_RED));
+        meta.displayName(Component.text("ɪɴꜰᴏʀᴍᴀᴄɪóɴ ᴇᴠᴇɴᴛᴏ").color(NamedTextColor.DARK_RED).decoration(TextDecoration.ITALIC, false));
         info.setItemMeta(meta);
 
         String state = gm.getGameState().name();
@@ -43,12 +44,12 @@ public class AdminGUI {
         String holder = gm.getCurrentHolder() != null ? gm.getCurrentHolder().getName() : "Ninguno";
 
         meta.lore(List.of(
-                Component.text("Estado: ", NamedTextColor.GRAY)
-                        .append(Component.text(state, NamedTextColor.YELLOW)),
-                Component.text("Jugadores: ", NamedTextColor.GRAY)
-                        .append(Component.text(String.valueOf(players), NamedTextColor.GREEN)),
-                Component.text("Holder de Papa: ", NamedTextColor.GRAY)
-                        .append(Component.text(holder, NamedTextColor.RED))
+                Component.text("Estado: ", NamedTextColor.GRAY).decoration(TextDecoration.ITALIC, false)
+                        .append(Component.text(state, NamedTextColor.YELLOW)).decoration(TextDecoration.ITALIC, false),
+                Component.text("Jugadores: ", NamedTextColor.GRAY).decoration(TextDecoration.ITALIC, false)
+                        .append(Component.text(String.valueOf(players), NamedTextColor.GREEN)).decoration(TextDecoration.ITALIC, false),
+                Component.text("Holder de Papa: ", NamedTextColor.GRAY).decoration(TextDecoration.ITALIC, false)
+                        .append(Component.text(holder, NamedTextColor.RED)).decoration(TextDecoration.ITALIC, false)
         ));
 
         info.setItemMeta(meta);
@@ -61,7 +62,7 @@ public class AdminGUI {
         meta.displayName(Component.text(name).color(NamedTextColor.DARK_RED).asComponent());
 
         if (lore != null) {
-            meta.lore(List.of(Component.text(lore, NamedTextColor.GRAY)));
+            meta.lore(List.of(Component.text(lore, NamedTextColor.GRAY).decoration(TextDecoration.ITALIC, false)));
         }
 
         item.setItemMeta(meta);

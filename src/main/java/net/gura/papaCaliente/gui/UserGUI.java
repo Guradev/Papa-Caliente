@@ -2,6 +2,7 @@ package net.gura.papaCaliente.gui;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -26,7 +27,7 @@ public class UserGUI implements Listener {
         meta.displayName(Component.text(name).color(NamedTextColor.DARK_RED).asComponent());
 
         if (lore != null) {
-            meta.lore(List.of(Component.text(lore, NamedTextColor.GRAY)));
+            meta.lore(List.of(Component.text(lore, NamedTextColor.GRAY).decoration(TextDecoration.ITALIC, false)));
         }
 
         item.setItemMeta(meta);
