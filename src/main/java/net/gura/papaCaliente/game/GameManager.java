@@ -69,7 +69,7 @@ public class GameManager {
         givePotato(currentHolder);
 
         // Falta el código para tener una bossbar dinámica (se utilizará adventureapi)
-        countdown = new Countdown(plugin, 10,
+        countdown = new Countdown(plugin, 60,
                 secondsLeft -> {
                     bossbar.ShowToAll(players);
                     currentHolder.sendMessage("§6¡La papa explotará en §f" + secondsLeft + "s§e!");
@@ -83,6 +83,7 @@ public class GameManager {
 
                     if (players.size() < 2) {
                         stopGame();
+                        bossbar.HideToAll(players);
                     } else {
                         startGame(); // Repetimos la lógica con otro jugador
                     }
@@ -108,10 +109,6 @@ public class GameManager {
                 }
             }
             player.getInventory().setContents(contents);
-        }
-
-        if (bossbar != null) {
-            bossbar.HideToAll(players);
         }
         for (Player player : Bukkit.getOnlinePlayers()) {
             Title.Times times = Title.Times.times(Duration.ofSeconds(1), Duration.ofSeconds(3), Duration.ofSeconds(1));
@@ -151,13 +148,13 @@ public class GameManager {
 
     private void givePotato(Player player) {
         ItemStack papa = CustomItems.PapaCaliente(player, 100);
-        player.getInventory().setItem(1, papa);
+        player.getInventory().setItem(0, papa);
         // Testing required for checking if the updateInventory is required
     }
 
     private void removePotato(Player player) {
         // Logic for removing the potato from the player
-        ItemStack item = player.getInventory().getItem(1);
+        ItemStack item = player.getInventory().getItem(0);
         if (CustomItems.isPapaCaliente(item)) {
             player.getInventory().setItem(4, null);
             player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_BASS, 1F, 1F);
