@@ -1,10 +1,9 @@
 package net.gura.papaCaliente;
 
-import net.gura.papaCaliente.commands.AdminCommand;
 import net.gura.papaCaliente.commands.PapaCalienteCommand;
 import net.gura.papaCaliente.game.GameManager;
 import net.gura.papaCaliente.game.GamePlayer;
-import net.gura.papaCaliente.listeners.AdminGUIListener;
+import net.gura.papaCaliente.listeners.*;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -24,7 +23,11 @@ public final class PapaCaliente extends JavaPlugin {
 
         // Registramos los eventos del plugin
         getServer().getPluginManager().registerEvents(new AdminGUIListener(), this);
+        getServer().getPluginManager().registerEvents(new ModGUIListener(), this);
+        getServer().getPluginManager().registerEvents(new PlayerManagerGUIListener(), this);
+        getServer().getPluginManager().registerEvents(new UserGUIListener(), this);
         getServer().getPluginManager().registerEvents(new GamePlayer(), this);
+        getServer().getPluginManager().registerEvents(new PlayerListener(), this);
 
         getServer().getConsoleSender().sendMessage("Evento Papa Caliente Habilitado " + "Versión " + version);
         getServer().getConsoleSender().sendMessage("Made by Gura1");

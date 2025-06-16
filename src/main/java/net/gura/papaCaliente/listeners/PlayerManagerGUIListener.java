@@ -22,7 +22,6 @@ public class PlayerManagerGUIListener implements Listener {
             if (clickedItem == null || clickedItem.getType() == Material.AIR) return;
 
             Material material = clickedItem.getType();
-            GameManager gm = PapaCaliente.getPlugin().getGameManager();
 
             switch (material) {
                 case ARROW -> {
