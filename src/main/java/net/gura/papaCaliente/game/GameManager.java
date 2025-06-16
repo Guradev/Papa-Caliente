@@ -59,17 +59,20 @@ public class GameManager {
             return;
         }
 
-        gameState = GameState.CORRIENDO;
-
         //Elegir a una persona random de la lista para darle la papa caliente
         List<Player> listaPlayers = new ArrayList<>(players);
+        if (listaPlayers.isEmpty()) {
+            Messenger.broadcast("No hay jugadores disponibles para iniciar el juego.");
+            return;
+        }
+        gameState = GameState.CORRIENDO;
         Collections.shuffle(listaPlayers);
         currentHolder = listaPlayers.get(0);
 
         givePotato(currentHolder);
 
         // Falta el código para tener una bossbar dinámica (se utilizará adventureapi)
-        countdown = new Countdown(plugin, 60,
+        countdown = new Countdown(plugin, 10,
                 secondsLeft -> {
                     bossbar.ShowToAll(players);
                     currentHolder.sendMessage("§6¡La papa explotará en §f" + secondsLeft + "s§e!");
@@ -142,14 +145,12 @@ public class GameManager {
         removePotato(de);
         givePotato(a);
         currentHolder = a;
-
-        // Falta implementar la logica del countdown
     }
 
     private void givePotato(Player player) {
         ItemStack papa = CustomItems.PapaCaliente(player, 100);
         player.getInventory().setItem(0, papa);
-        // Testing required for checking if the updateInventory is required
+        Bukkit.getScheduler().runTaskLater(plugin, player::updateInventory, 1L);
     }
 
     private void removePotato(Player player) {
