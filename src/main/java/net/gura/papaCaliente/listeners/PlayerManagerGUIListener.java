@@ -11,11 +11,11 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 
-public class AdminGUIListener implements Listener {
+public class PlayerManagerGUIListener implements Listener {
     @EventHandler
     public void ClickItem(InventoryClickEvent event) {
         if (!(event.getWhoClicked() instanceof Player player)) return;
-        if (event.getView().getTitle().equals(AdminGUI.TITLE)) {
+        if (event.getView().getTitle().equals(PlayerManagerGUI.TITLE)) {
             event.setCancelled(true);
 
             ItemStack clickedItem = event.getCurrentItem();
@@ -25,32 +25,13 @@ public class AdminGUIListener implements Listener {
             GameManager gm = PapaCaliente.getPlugin().getGameManager();
 
             switch (material) {
-                case LIME_WOOL -> {
-                    gm.startGame();
-                    player.sendMessage("§aEvento iniciado correctamente!");
-                }
-                case RED_WOOL -> {
-                    gm.stopGame();
-                    player.sendMessage("§cEvento parado correctamente.");
-                }
-                case CLOCK -> {
-                    player.sendMessage("§fContador reseteado correctamente");
-                }
-                case TNT -> {
-                    if (gm.getCurrentHolder() != null) {
-                        gm.getCurrentHolder().getWorld().createExplosion(gm.getCurrentHolder().getLocation(), 2F);
-                        player.sendMessage("§cExplotado correctamente :)");
-                    }
-                }
-                case PLAYER_HEAD -> {
-                    PlayerManagerGUI.openGUI(player);
-                    player.sendMessage("§bAbriendo menu de gestión de jugadores...");
+                case ARROW -> {
+                    AdminGUI.openGUI(player);
                 }
                 case BARRIER -> {
                     player.closeInventory();
                 }
             }
-
         }
     }
 }

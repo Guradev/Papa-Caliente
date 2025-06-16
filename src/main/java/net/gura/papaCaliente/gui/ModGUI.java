@@ -7,10 +7,11 @@ import org.bukkit.inventory.Inventory;
 
 public class ModGUI {
 
-    public static final String TITLE = ChatColor.BLUE + "Moderación Evento";
+    public static final String TITLE = ChatColor.BLUE + "ᴍᴏᴅᴇʀᴀᴄɪóɴ ᴇᴠᴇɴᴛᴏ";
 
     public static void openGUI(Player mod) {
-        Inventory inv = Bukkit.createInventory(null, 9, TITLE);
+        Inventory inv = Bukkit.createInventory(null, 54, TITLE);
+
 
     }
 

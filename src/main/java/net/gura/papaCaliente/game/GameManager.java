@@ -8,7 +8,7 @@ import org.bukkit.inventory.ItemStack;
 import java.util.*;
 
 public class GameManager {
-    private GameState gameState = GameState.WAITING;
+    private GameState gameState = GameState.ESPERANDO;
     private final Set<Player> players = new HashSet<>();
     private Player currentHolder = null;
 
@@ -17,7 +17,7 @@ public class GameManager {
     }
 
     public boolean isRunning() {
-        return gameState == GameState.RUNNING;
+        return gameState == GameState.CORRIENDO;
     }
 
     public void addPlayer() {
@@ -33,7 +33,7 @@ public class GameManager {
             return;
         }
 
-        gameState = GameState.RUNNING;
+        gameState = GameState.CORRIENDO;
 
         //Elegir a una persona random de la lista para darle la papa caliente
         List<Player> listaPlayers = new ArrayList<>(players);
@@ -46,7 +46,8 @@ public class GameManager {
     }
 
     public void stopGame() {
-        gameState = GameState.ENDED;
+        gameState = GameState.TERMINADO;
+
         // Limpiamos los players del set y quitamos el current holder
         players.clear();
         currentHolder = null;
@@ -60,6 +61,10 @@ public class GameManager {
 
     public Player getCurrentHolder() {
         return currentHolder;
+    }
+
+    public void setCurrentHolder(Player player) {
+        currentHolder = player;
     }
 
     public void passPotato(Player de, Player a) {

@@ -3,6 +3,7 @@ package net.gura.papaCaliente.commands;
 import net.gura.papaCaliente.PapaCaliente;
 import net.gura.papaCaliente.game.GameManager;
 import net.gura.papaCaliente.gui.AdminGUI;
+import net.gura.papaCaliente.gui.PlayerManagerGUI;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -32,6 +33,10 @@ public class PapaCalienteCommand implements CommandExecutor {
 
         if (args.length == 1 && args[0].equalsIgnoreCase("stop")) {
             gm.stopGame();
+            return true;
+        }
+        if (args.length == 2 && args[0].equalsIgnoreCase("gui") && args[1].equalsIgnoreCase("playermanager")) {
+            PlayerManagerGUI.openGUI(player);
             return true;
         }
         return true;
