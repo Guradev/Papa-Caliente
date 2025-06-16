@@ -64,7 +64,7 @@ public class GameManager {
         //Elegir a una persona random de la lista para darle la papa caliente
         List<Player> listaPlayers = new ArrayList<>(players);
         Collections.shuffle(listaPlayers);
-        currentHolder = listaPlayers.getFirst();
+        currentHolder = listaPlayers.get(0);
 
         givePotato(currentHolder);
 
