@@ -69,6 +69,7 @@ public class PapaCalienteCommand implements CommandExecutor {
             }
             gm.startGame();
             commandSender.sendMessage(Component.text("Has iniciado el evento de papa caliente").color(NamedTextColor.GREEN));
+            player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 10F, 1F);
             return true;
         }
 
@@ -100,10 +101,6 @@ public class PapaCalienteCommand implements CommandExecutor {
             gm.stopGame();
             commandSender.sendMessage(Component.text("Has parado el evento de papa caliente").color(NamedTextColor.GREEN));
             player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 10F, 1F);
-            return true;
-        }
-        if (args.length == 2 && args[0].equalsIgnoreCase("gui") && args[1].equalsIgnoreCase("playermanager")) {
-            PlayerManagerGUI.openGUI(player,1);
             return true;
         }
         return true;

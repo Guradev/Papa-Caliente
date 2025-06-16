@@ -39,8 +39,12 @@ public class AdminGUIListener implements Listener {
         GameManager gm = PapaCaliente.getPlugin().getGameManager();
 
         switch (material) {
-            case LIME_WOOL -> player.performCommand("papacaliente start");
-            case RED_WOOL -> player.performCommand("papacaliente stop");
+            case LIME_WOOL -> {
+                player.performCommand("papacaliente start");
+            }
+            case RED_WOOL -> {
+                player.performCommand("papacaliente stop");
+            }
             case CLOCK -> {
                 if (!gm.isRunning()) {
                     player.sendMessage(Component.text("¡El evento aún no ha iniciado!").color(NamedTextColor.RED));

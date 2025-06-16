@@ -100,7 +100,7 @@ public class PlayerManagerGUIListener implements Listener {
                 } else if (event.getClick() == ClickType.RIGHT) {
                     gm.removePlayer(targetPlayer);
                     admin.sendMessage("§c" + targetPlayer.getName() + " fue eliminado del evento.");
-                    targetPlayer.sendMessage(Component.text("Has sido eliminado del evento."));
+                    targetPlayer.sendMessage(Component.text("Has sido eliminado del evento.").color(NamedTextColor.RED));
                     PlayerManagerGUI.openGUI(admin, currentPage);
                 }
             }
