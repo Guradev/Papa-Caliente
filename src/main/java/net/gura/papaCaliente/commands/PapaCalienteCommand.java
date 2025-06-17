@@ -4,7 +4,6 @@ import net.gura.papaCaliente.PapaCaliente;
 import net.gura.papaCaliente.game.GameManager;
 import net.gura.papaCaliente.gui.AdminGUI;
 import net.gura.papaCaliente.gui.ModGUI;
-import net.gura.papaCaliente.gui.PlayerManagerGUI;
 import net.gura.papaCaliente.gui.UserGUI;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;

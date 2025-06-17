@@ -27,7 +27,7 @@ public class GameManager {
     private Player currentHolder = null;
     BossBarHandler bossbar = new BossBarHandler("Papa Caliente", 1f, BossBar.Color.YELLOW, BossBar.Overlay.PROGRESS);
 
-    private final Boolean isTesting = false; // For testing purposes only (disable in production)
+    private final boolean isTesting = false; // For testing purposes only (disable in production)
 
     public GameState getGameState() {
         return gameState;

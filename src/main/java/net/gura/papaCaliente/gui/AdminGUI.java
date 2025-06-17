@@ -25,7 +25,7 @@ public class AdminGUI {
         inv.setItem(13, clickItem(Material.RED_WOOL, "§cᴘᴀʀᴀʀ ᴇᴠᴇɴᴛᴏ", "Clic para forzar el paro del evento"));
         inv.setItem(14, clickItem(Material.CLOCK, "§aʀᴇꜱᴇᴛᴇᴀʀ ᴄᴏɴᴛᴀᴅᴏʀ", "Clic para resetear el contador del evento"));
         inv.setItem(15, clickItem(Material.TNT, "§aᴇxᴘʟᴏᴛᴀʀ ᴘᴀᴘᴀ", "Forzar el explote de la papa (Causará que el usuario muera)"));
-        inv.setItem(16, clickItem(Material.PLAYER_HEAD, "§aɢᴇꜱᴛɪᴏɴᴀʀ ᴊᴜɢᴀᴅᴏʀᴇꜱ", "Abre la GUI para gestionar a los jugadores"));
+        inv.setItem(32, clickItem(Material.PLAYER_HEAD, "§aɢᴇꜱᴛɪᴏɴᴀʀ ᴊᴜɢᴀᴅᴏʀᴇꜱ", "Abre la GUI para gestionar a los jugadores"));
         inv.setItem(53, clickItem(Material.BARRIER, "§cᴄᴇʀʀᴀʀ", "Cierra el menú"));
         admin.openInventory(inv);
 
