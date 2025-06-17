@@ -155,11 +155,11 @@ public class GameManager {
             for (Player player : Bukkit.getOnlinePlayers()) {
                 player.playSound(player.getLocation(), Sound.UI_TOAST_CHALLENGE_COMPLETE, 3F, 1F);
                 player.showTitle(Title.title(
-                        Component.text("🏆 GANADOR:  ")
+                        Component.text("🏆 GANADOR: ")
                                 .color(NamedTextColor.YELLOW)
                                 .decorate(TextDecoration.BOLD)
                                 .append(Component.text(winner.getName(), NamedTextColor.GOLD)),
-                        Component.text("Gracias por jugar").color(NamedTextColor.GRAY),
+                        Component.text("¡Gracias por jugar!").color(NamedTextColor.GRAY),
                         Title.Times.times(Duration.ofMillis(300), Duration.ofSeconds(2), Duration.ofMillis(300))
                 ));
             }
