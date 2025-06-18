@@ -94,15 +94,6 @@ public class GamePlayer implements Listener {
             e.setCancelled(true);
         }
     }
-
-    @EventHandler
-    public void preventPotatoDrop(PlayerDropItemEvent e) {
-        ItemStack item = e.getItemDrop().getItemStack();
-        if (item.getType() != Material.POTATO) return;
-        if (CustomItems.isPapaCaliente(item)) {
-            e.setCancelled(true);
-        }
-    }
     // End of Events for handling prevention
 
     @EventHandler
@@ -175,8 +166,6 @@ public class GamePlayer implements Listener {
                 .trail(false)
                 .flicker(true)
                 .build());
-
-        meta.setPower(1);
         firework.setFireworkMeta(meta);
 
         Bukkit.getScheduler().runTaskLater(plugin, firework::detonate, 1L);
@@ -189,12 +178,12 @@ public class GamePlayer implements Listener {
         if (gm.isRunning()) {
             player.setGlowing(false);
 
+            e.getDrops().removeIf(CustomItems::isPapaCaliente);
             Bukkit.getScheduler().runTaskLater(plugin, () -> {
                 spawnExplosionFirework(player);
                 Respawn.respawnPlayer(player);
             }, 1L);
 
-            spawnExplosionFirework(player);
             e.deathMessage(Component.empty());
         }
     }
