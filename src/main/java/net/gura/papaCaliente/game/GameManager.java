@@ -195,11 +195,17 @@ public class GameManager {
     }
 
     public void passPotato(Player de, Player a) {
-        if (!players.contains(a)) return;
+        if (de == null || a == null) return;
+        if (!players.contains(de) || !players.contains(a)) return;
+        if (de.equals(a)) return;
+        if (!de.equals(currentHolder)) return;
+
         de.setGlowing(false);
         a.setGlowing(true);
+
         removePotato(de);
         givePotato(a);
+
         currentHolder = a;
     }
 

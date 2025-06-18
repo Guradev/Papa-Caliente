@@ -1,6 +1,7 @@
 package net.gura.papaCaliente.game;
 
 import net.gura.papaCaliente.PapaCaliente;
+import net.gura.papaCaliente.nms.Respawn;
 import net.gura.papaCaliente.utils.CustomItems;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -49,22 +50,6 @@ public class GamePlayer implements Listener {
         ItemStack item = e.getItem().getItemStack();
         if (CustomItems.isPapaCaliente(item)) {
             e.setCancelled(true);
-        }
-    }
-    // End of Events for handling prevention
-    @EventHandler
-    public void PlayerInteractEvent(PlayerInteractEntityEvent e) {
-        if (!(e.getRightClicked() instanceof Player target)) return;
-
-        Player click = e.getPlayer();
-
-        if (click.equals(gm.getCurrentHolder()) && CustomItems.isPapaCaliente(click.getInventory().getItemInMainHand())) {
-            gm.passPotato(click,target);
-            gm.setCurrentHolder(target);
-
-            click.sendMessage("¡Has pasado la papa Caliente a " + target.getName() + " !");
-            target.sendMessage("¡Te ha pasado la papa Caliente " + click.getName() + " !");
-
         }
     }
     // Event for preventing people from offhanding or moving the hot potato
@@ -118,6 +103,7 @@ public class GamePlayer implements Listener {
             e.setCancelled(true);
         }
     }
+    // End of Events for handling prevention
 
     @EventHandler
     public void onPlayerInteractEntity(PlayerInteractEntityEvent e) {
@@ -136,13 +122,13 @@ public class GamePlayer implements Listener {
         clicker.sendMessage(
                 Component.text("¡Has pasado la ", NamedTextColor.GREEN)
                         .append(Component.text("papa", NamedTextColor.RED))
-                        .append(Component.text(" a " + target.getName() + "!", NamedTextColor.GREEN))
+                        .append(Component.text("!", NamedTextColor.GREEN))
         );
 
         target.sendMessage(
-                Component.text("¡Te ha pasado la ", NamedTextColor.RED)
+                Component.text("¡Te han pasado la ", NamedTextColor.RED)
                         .append(Component.text("papa", NamedTextColor.GOLD))
-                        .append(Component.text(" " + clicker.getName() + "!", NamedTextColor.RED))
+                        .append(Component.text("!", NamedTextColor.RED))
         );
     }
 
@@ -176,18 +162,20 @@ public class GamePlayer implements Listener {
     }
 
     public static void spawnExplosionFirework(Player player) {
-        if (player == null || !player.isOnline() || player.isDead()) return;
+        if (player == null || !player.isOnline()) return;
 
         Location loc = player.getLocation().add(0, 1, 0);
         Firework firework = player.getWorld().spawn(loc, Firework.class);
         FireworkMeta meta = firework.getFireworkMeta();
+
         meta.addEffect(FireworkEffect.builder()
                 .with(FireworkEffect.Type.BALL_LARGE)
                 .withColor(Color.RED)
                 .withFade(Color.ORANGE)
-                .trail(true)
+                .trail(false)
                 .flicker(true)
                 .build());
+
         meta.setPower(1);
         firework.setFireworkMeta(meta);
 
@@ -198,8 +186,16 @@ public class GamePlayer implements Listener {
     @EventHandler
     public void playerDeath(PlayerDeathEvent e) {
         Player player = e.getEntity();
-        player.setGlowing(false);
+        if (gm.isRunning()) {
+            player.setGlowing(false);
+
+            Bukkit.getScheduler().runTaskLater(plugin, () -> {
+                spawnExplosionFirework(player);
+                Respawn.respawnPlayer(player);
+            }, 1L);
+
             spawnExplosionFirework(player);
             e.deathMessage(Component.empty());
         }
     }
+}
