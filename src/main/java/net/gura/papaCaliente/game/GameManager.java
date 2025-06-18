@@ -1,6 +1,8 @@
 package net.gura.papaCaliente.game;
 
 import net.gura.papaCaliente.logics.Countdown;
+import net.gura.papaCaliente.nms.Particles;
+import net.gura.papaCaliente.nms.Screen;
 import net.gura.papaCaliente.ui.BossBarHandler;
 import net.gura.papaCaliente.utils.CustomItems;
 import net.kyori.adventure.bossbar.BossBar;
@@ -8,9 +10,8 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
 import net.kyori.adventure.title.Title;
+import net.minecraft.core.particles.ParticleTypes;
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.Particle;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -27,7 +28,7 @@ public class GameManager {
     private Player currentHolder = null;
     BossBarHandler bossbar = new BossBarHandler("Papa Caliente", 1f, BossBar.Color.YELLOW, BossBar.Overlay.PROGRESS);
 
-    private final boolean isTesting = false; // For testing purposes only (disable in production)
+    private final boolean isTesting = true; // For testing purposes only (disable in production)
 
     public GameState getGameState() {
         return gameState;
@@ -42,6 +43,7 @@ public class GameManager {
     }
 
     public void addPlayer(Player player) {
+        if (players.contains(player)) return;
         players.add(player);
         player.sendMessage(Component.text("¡Fuiste agregado al evento de papa caliente!").color(NamedTextColor.GOLD));
     }
@@ -85,7 +87,8 @@ public class GameManager {
                     float progress = Math.max(0f, secondsLeft / 10f);
                     bossbar.updateProgress(progress);
                     bossbar.updateTitle("⏳ ¡" + secondsLeft + "s para explotar!");
-
+                    // Send hurt player packet to simulate screen flashing for aesthetics
+                    Screen.flashRed(currentHolder, plugin, 5,10);
                     currentHolder.sendMessage(
                             Component.text("¡La papa explotará en ", NamedTextColor.GOLD)
                                     .append(Component.text(secondsLeft + "s", NamedTextColor.WHITE))
@@ -95,10 +98,8 @@ public class GameManager {
                 () -> {
                     removePotato(currentHolder);
                     currentHolder.sendMessage(Component.text("¡La papa te explotó!").color(NamedTextColor.RED));
-                    Location loc = currentHolder.getLocation();
-                    // Simulamos explosión
-                    currentHolder.getWorld().spawnParticle(Particle.EXPLOSION, loc, 1);
-                    currentHolder.getWorld().playSound(loc, Sound.ENTITY_GENERIC_EXPLODE, 2f, 1f);
+                    // Lanzamos un packet a todos los jugadores conectados para que vean las particulas
+                    Particles.spawnParticles(currentHolder, ParticleTypes.FIREWORK, 30, true, true);
                     currentHolder.damage(100);
                     removePlayer(currentHolder);
 

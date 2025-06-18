@@ -62,7 +62,7 @@ public class PapaCalienteCommand implements CommandExecutor {
                 return true;
             }
             if (gm.getPlayers().size() < 2 && !gm.getIsTesting()) {
-                commandSender.sendMessage(Component.text("No hay suficientes jugadores para iniciar el evento, requeridos al menos 2.").color(NamedTextColor.RED));
+                commandSender.sendMessage(Component.text("No hay suficientes jugadores para iniciar el evento, requeridos 2").color(NamedTextColor.RED));
                 player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 10F, 1F);
                 return true;
             }
@@ -72,7 +72,7 @@ public class PapaCalienteCommand implements CommandExecutor {
             return true;
         }
 
-        if (args[0].equalsIgnoreCase("addplayer")) {
+        if (args[0].equalsIgnoreCase("add")) {
             if (args.length < 2) {
                 commandSender.sendMessage(Component.text( "Debes especificar un nombre de usuario").color(NamedTextColor.RED));
                 player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 10F, 1F);
@@ -81,12 +81,29 @@ public class PapaCalienteCommand implements CommandExecutor {
 
             Player jugador = Bukkit.getPlayerExact(args[1]);
             if (jugador == null) {
-                commandSender.sendMessage(Component.text( "El jugador no está en línea").color(NamedTextColor.RED));
+                commandSender.sendMessage(Component.text( "No se ha encontrado al jugador").color(NamedTextColor.RED));
                 player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 10F, 1F);
                 return true;
             }
             gm.addPlayer(jugador);
             commandSender.sendMessage(Component.text("Has agregado a " + jugador.getName() + " al evento").color(NamedTextColor.GREEN));
+            player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 10F, 1F);
+            return true;
+        }
+        if (args[0].equalsIgnoreCase("remove")) {
+            if (args.length < 2) {
+                commandSender.sendMessage(Component.text( "Debes especificar un nombre de usuario").color(NamedTextColor.RED));
+                player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 10F, 1F);
+            }
+
+            Player jugador = Bukkit.getPlayerExact(args[1]);
+            if (jugador == null) {
+                commandSender.sendMessage("No se ha encontrado al jugador");
+                player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 10F, 1F);
+                return true;
+            }
+            gm.removePlayer(jugador);
+            commandSender.sendMessage(Component.text("Has eliminado a " + jugador.getName() + " del evento").color(NamedTextColor.GREEN));
             player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 10F, 1F);
             return true;
         }

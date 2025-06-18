@@ -25,6 +25,7 @@ import static net.gura.papaCaliente.PapaCaliente.plugin;
 public class GamePlayer implements Listener {
 
     GameManager gm = PapaCaliente.getPlugin().getGameManager();
+    Player holder = gm.getCurrentHolder();
 
     //Events for handling prevention of Drops and Pickups for the "Papa Caliente"
     @EventHandler
@@ -60,6 +61,7 @@ public class GamePlayer implements Listener {
         if (click.equals(gm.getCurrentHolder()) && CustomItems.isPapaCaliente(click.getInventory().getItemInMainHand())) {
             gm.passPotato(click,target);
             gm.setCurrentHolder(target);
+            holder.setGlowing(true);
 
             click.sendMessage("¡Has pasado la Papa Caliente a " + target.getName() + " !");
             target.sendMessage("¡Te ha pasado la Papa Caliente " + click.getName() + " !");
@@ -123,7 +125,6 @@ public class GamePlayer implements Listener {
         if (!(e.getRightClicked() instanceof Player target)) return;
 
         Player clicker = e.getPlayer();
-        GameManager gm = PapaCaliente.getPlugin().getGameManager();
 
         if (!gm.isInGame(clicker) || !gm.isInGame(target)) return;
 
@@ -133,16 +134,17 @@ public class GamePlayer implements Listener {
         if (clicker.equals(target)) return;
 
         gm.passPotato(clicker, target);
+        holder.setGlowing(true);
 
         clicker.sendMessage(
                 Component.text("¡Has pasado la ", NamedTextColor.GREEN)
-                        .append(Component.text("Papa Caliente", NamedTextColor.RED))
+                        .append(Component.text("papa", NamedTextColor.RED))
                         .append(Component.text(" a " + target.getName() + "!", NamedTextColor.GREEN))
         );
 
         target.sendMessage(
                 Component.text("¡Te ha pasado la ", NamedTextColor.RED)
-                        .append(Component.text("Papa Caliente", NamedTextColor.GOLD))
+                        .append(Component.text("papa", NamedTextColor.GOLD))
                         .append(Component.text(" " + clicker.getName() + "!", NamedTextColor.RED))
         );
     }
@@ -159,16 +161,17 @@ public class GamePlayer implements Listener {
         if (clicker.equals(target)) return;
 
         gm.passPotato(clicker, target);
+        holder.setGlowing(true);
 
         clicker.sendMessage(
                 Component.text("¡Has pasado la ", NamedTextColor.GREEN)
-                        .append(Component.text("Papa Caliente", NamedTextColor.RED))
+                        .append(Component.text("papa", NamedTextColor.RED))
                         .append(Component.text(" a " + target.getName() + "!", NamedTextColor.GREEN))
         );
 
         target.sendMessage(
                 Component.text("¡Te ha pasado la ", NamedTextColor.RED)
-                        .append(Component.text("Papa Caliente", NamedTextColor.GOLD))
+                        .append(Component.text("papa", NamedTextColor.GOLD))
                         .append(Component.text(" " + clicker.getName() + "!", NamedTextColor.RED))
         );
 
@@ -178,9 +181,9 @@ public class GamePlayer implements Listener {
     @EventHandler
     public void playerDeath(PlayerDeathEvent e) {
         Player player = e.getEntity();
-
         if(gm.isInGame(player)) {
             e.deathMessage(Component.empty());
+            holder.setGlowing(false);
         }
     }
 }
