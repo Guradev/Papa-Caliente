@@ -4,8 +4,8 @@ import net.gura.papaCaliente.PapaCaliente;
 import net.gura.papaCaliente.utils.CustomItems;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
-import org.bukkit.Bukkit;
-import org.bukkit.Material;
+import org.bukkit.*;
+import org.bukkit.entity.Firework;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -19,13 +19,13 @@ import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.event.player.PlayerSwapHandItemsEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.FireworkMeta;
 
 import static net.gura.papaCaliente.PapaCaliente.plugin;
 
 public class GamePlayer implements Listener {
 
     GameManager gm = PapaCaliente.getPlugin().getGameManager();
-    Player holder = gm.getCurrentHolder();
 
     //Events for handling prevention of Drops and Pickups for the "Papa Caliente"
     @EventHandler
@@ -61,10 +61,9 @@ public class GamePlayer implements Listener {
         if (click.equals(gm.getCurrentHolder()) && CustomItems.isPapaCaliente(click.getInventory().getItemInMainHand())) {
             gm.passPotato(click,target);
             gm.setCurrentHolder(target);
-            holder.setGlowing(true);
 
-            click.sendMessage("¡Has pasado la Papa Caliente a " + target.getName() + " !");
-            target.sendMessage("¡Te ha pasado la Papa Caliente " + click.getName() + " !");
+            click.sendMessage("¡Has pasado la papa Caliente a " + target.getName() + " !");
+            target.sendMessage("¡Te ha pasado la papa Caliente " + click.getName() + " !");
 
         }
     }
@@ -132,9 +131,7 @@ public class GamePlayer implements Listener {
         if (!CustomItems.isPapaCaliente(clicker.getInventory().getItemInMainHand())) return;
 
         if (clicker.equals(target)) return;
-
         gm.passPotato(clicker, target);
-        holder.setGlowing(true);
 
         clicker.sendMessage(
                 Component.text("¡Has pasado la ", NamedTextColor.GREEN)
@@ -161,7 +158,7 @@ public class GamePlayer implements Listener {
         if (clicker.equals(target)) return;
 
         gm.passPotato(clicker, target);
-        holder.setGlowing(true);
+        target.setGlowing(true);
 
         clicker.sendMessage(
                 Component.text("¡Has pasado la ", NamedTextColor.GREEN)
@@ -178,12 +175,31 @@ public class GamePlayer implements Listener {
         e.setCancelled(true);
     }
 
+    public static void spawnExplosionFirework(Player player) {
+        if (player == null || !player.isOnline() || player.isDead()) return;
+
+        Location loc = player.getLocation().add(0, 1, 0);
+        Firework firework = player.getWorld().spawn(loc, Firework.class);
+        FireworkMeta meta = firework.getFireworkMeta();
+        meta.addEffect(FireworkEffect.builder()
+                .with(FireworkEffect.Type.BALL_LARGE)
+                .withColor(Color.RED)
+                .withFade(Color.ORANGE)
+                .trail(true)
+                .flicker(true)
+                .build());
+        meta.setPower(1);
+        firework.setFireworkMeta(meta);
+
+        Bukkit.getScheduler().runTaskLater(plugin, firework::detonate, 1L);
+    }
+
+
     @EventHandler
     public void playerDeath(PlayerDeathEvent e) {
         Player player = e.getEntity();
-        if(gm.isInGame(player)) {
+        player.setGlowing(false);
+            spawnExplosionFirework(player);
             e.deathMessage(Component.empty());
-            holder.setGlowing(false);
         }
     }
-}

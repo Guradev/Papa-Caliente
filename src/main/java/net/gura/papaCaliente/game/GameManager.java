@@ -1,8 +1,6 @@
 package net.gura.papaCaliente.game;
 
 import net.gura.papaCaliente.logics.Countdown;
-import net.gura.papaCaliente.nms.Particles;
-import net.gura.papaCaliente.nms.Screen;
 import net.gura.papaCaliente.ui.BossBarHandler;
 import net.gura.papaCaliente.utils.CustomItems;
 import net.kyori.adventure.bossbar.BossBar;
@@ -10,7 +8,6 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
 import net.kyori.adventure.title.Title;
-import net.minecraft.core.particles.ParticleTypes;
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
@@ -26,9 +23,9 @@ public class GameManager {
     private GameState gameState = GameState.ESPERANDO;
     private final Set<Player> players = new HashSet<>();
     private Player currentHolder = null;
-    BossBarHandler bossbar = new BossBarHandler("Papa Caliente", 1f, BossBar.Color.YELLOW, BossBar.Overlay.PROGRESS);
+    BossBarHandler bossbar = new BossBarHandler("Papa Caliente...", 1f, BossBar.Color.YELLOW, BossBar.Overlay.PROGRESS);
 
-    private final boolean isTesting = true; // For testing purposes only (disable in production)
+    private final boolean isTesting = false; // For testing purposes only (disable in production)
 
     public GameState getGameState() {
         return gameState;
@@ -79,6 +76,7 @@ public class GameManager {
         currentHolder = listaPlayers.get(0);
 
         givePotato(currentHolder);
+        currentHolder.setGlowing(true);
 
         countdown = new Countdown(plugin, 10,
                 secondsLeft -> {
@@ -87,8 +85,10 @@ public class GameManager {
                     float progress = Math.max(0f, secondsLeft / 10f);
                     bossbar.updateProgress(progress);
                     bossbar.updateTitle("⏳ ¡" + secondsLeft + "s para explotar!");
-                    // Send hurt player packet to simulate screen flashing for aesthetics
-                    Screen.flashRed(currentHolder, plugin, 5,10);
+                    /* Send hurt player packet to simulate screen flashing for aesthetics
+                     Screen.flashRed(currentHolder, plugin, 5,10);
+                     REQUIRES FIXING
+                    */
                     currentHolder.sendMessage(
                             Component.text("¡La papa explotará en ", NamedTextColor.GOLD)
                                     .append(Component.text(secondsLeft + "s", NamedTextColor.WHITE))
@@ -96,11 +96,10 @@ public class GameManager {
                     );
                 },
                 () -> {
+                    currentHolder.damage(100);
                     removePotato(currentHolder);
                     currentHolder.sendMessage(Component.text("¡La papa te explotó!").color(NamedTextColor.RED));
                     // Lanzamos un packet a todos los jugadores conectados para que vean las particulas
-                    Particles.spawnParticles(currentHolder, ParticleTypes.FIREWORK, 30, true, true);
-                    currentHolder.damage(100);
                     removePlayer(currentHolder);
 
                     bossbar.HideToAll();
@@ -124,6 +123,7 @@ public class GameManager {
             countdown = null;
         }
         for (Player player : Bukkit.getOnlinePlayers()) {
+            player.setGlowing(false);
             ItemStack[] contents = player.getInventory().getContents();
             for (int i = 0; i < contents.length; i++) {
                 ItemStack item = contents[i];
@@ -196,7 +196,8 @@ public class GameManager {
 
     public void passPotato(Player de, Player a) {
         if (!players.contains(a)) return;
-
+        de.setGlowing(false);
+        a.setGlowing(true);
         removePotato(de);
         givePotato(a);
         currentHolder = a;

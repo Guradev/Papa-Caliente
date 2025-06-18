@@ -47,7 +47,7 @@ public class AdminGUI {
                 Component.text("Estado: ", NamedTextColor.GRAY).decoration(TextDecoration.ITALIC, false)
                         .append(Component.text(state, NamedTextColor.YELLOW)).decoration(TextDecoration.ITALIC, false),
                 Component.text("Jugadores: ", NamedTextColor.GRAY).decoration(TextDecoration.ITALIC, false)
-                        .append(Component.text(String.valueOf(players), NamedTextColor.GREEN)).decoration(TextDecoration.ITALIC, false),
+                        .append(Component.text(players, NamedTextColor.GREEN)).decoration(TextDecoration.ITALIC, false),
                 Component.text("Holder de Papa: ", NamedTextColor.GRAY).decoration(TextDecoration.ITALIC, false)
                         .append(Component.text(holder, NamedTextColor.RED)).decoration(TextDecoration.ITALIC, false)
         ));
